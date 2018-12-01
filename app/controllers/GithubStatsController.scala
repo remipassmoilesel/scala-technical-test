@@ -1,6 +1,6 @@
 package controllers
 
-import githubStats.{GithubComitter, GithubStatsService}
+import githubStats.{GithubCommitter, GithubStatsService}
 import javax.inject._
 import play.api.Logger
 import play.api.libs.json.{Json, Writes}
@@ -13,7 +13,7 @@ import scala.concurrent.ExecutionContext
 class GithubStatsController @Inject()(cc: ControllerComponents,
                                       githubService: GithubStatsService)(implicit exec: ExecutionContext) extends AbstractController(cc) {
 
-  implicit val committerWrites: Writes[GithubComitter] = Json.writes[GithubComitter]
+  implicit val committerWrites: Writes[GithubCommitter] = Json.writes[GithubCommitter]
 
   def getTopComitters(owner: String, repository: String) = Action.async {
     Logger.debug(s"Asking for top comitters on project: $owner/$repository")

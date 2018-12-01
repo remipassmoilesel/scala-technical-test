@@ -9,12 +9,12 @@ import scala.concurrent.Future
 
 class GithubStatsService @Inject()(httpClient: HttpClient) {
 
-  def getTopComittersOfRepo(owner: String, repository: String): Future[List[GithubComitter]] = {
+  def getTopComittersOfRepo(owner: String, repository: String): Future[List[GithubCommitter]] = {
     httpClient.get(getRepoCommitsRoute(owner, repository))
       .map(jsonToSortedGithubComitters)
   }
 
-  private def jsonToSortedGithubComitters(jsValue: JsValue): List[GithubComitter] = {
+  private def jsonToSortedGithubComitters(jsValue: JsValue): List[GithubCommitter] = {
     val jsArray = jsValue.as[JsArray]
 
     val committers = jsArray.value
@@ -27,7 +27,7 @@ class GithubStatsService @Inject()(httpClient: HttpClient) {
       .map(groupedCommits => {
         val commits = groupedCommits._2
         val firstCommit = commits(0)
-        GithubComitter(firstCommit.get("name").get, firstCommit.get("email").get, commits.size)
+        GithubCommitter(firstCommit.get("name").get, firstCommit.get("email").get, commits.size)
       })
       .toStream
       .sortBy(_.commits)(Ordering[Int].reverse)
