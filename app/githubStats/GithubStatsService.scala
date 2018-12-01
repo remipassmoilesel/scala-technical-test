@@ -38,11 +38,11 @@ class GithubStatsService @Inject()(httpClient: HttpClient) {
           .map(groupedLanguages => {
             groupedLanguages.keys
               .map(languageName => {
-                val totalUsage = groupedLanguages.getOrElse(languageName, List()).foldLeft(0)(_ + _.lines)
+                val totalUsage = groupedLanguages.getOrElse(languageName, List()).foldLeft(0)(_ + _.bytes)
                 LanguageUsage(languageName, totalUsage)
               })
               .toStream
-              .sortBy(_.lines)(Ordering[Int].reverse)
+              .sortBy(_.bytes)(Ordering[Int].reverse)
               .toList
               .slice(0, 10)
           })

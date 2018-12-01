@@ -12,6 +12,6 @@ case class GithubRepository(name: String, owner: String) {
 
 }
 
-case class LanguageUsage(name: String, lines: Int) {
+case class LanguageUsage(name: String, bytes: Int) {
 
 }
