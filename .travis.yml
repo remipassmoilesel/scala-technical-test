@@ -10,13 +10,11 @@ jdk:
 env:
   matrix:
     - SCRIPT=scripts/test-sbt
-    - SCRIPT=scripts/test-gradle
 script:
 - $SCRIPT
 cache:
   directories:
   - "$HOME/.ivy2/cache"
-  - "$HOME/.gradle/caches"
 before_cache:
 - rm -rf $HOME/.ivy2/cache/com.typesafe.play/*
 - rm -rf $HOME/.ivy2/cache/scala_*/sbt_*/com.typesafe.play/*
