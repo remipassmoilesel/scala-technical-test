@@ -15,9 +15,9 @@ class GithubStatsController @Inject()(cc: ControllerComponents,
 
   implicit val committerWrites: Writes[GithubComitter] = Json.writes[GithubComitter]
 
-  def getTopComitters(projectId: String) = Action.async {
-    Logger.debug(s"Asking for top comitters on project: $projectId")
-    githubService.getTopComittersForProject(projectId).map(comitters => {
+  def getTopComitters(owner: String, repository: String) = Action.async {
+    Logger.debug(s"Asking for top comitters on project: $owner/$repository")
+    githubService.getTopComittersOfRepo(owner, repository).map(comitters => {
       Ok(Json.obj("comitters" -> comitters))
     })
   }
