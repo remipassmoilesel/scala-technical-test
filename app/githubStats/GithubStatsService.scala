@@ -7,26 +7,19 @@ import utils.HttpClient
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-// TODO: move entity mapping to a dedicated object
-
 class GithubStatsService @Inject()(httpClient: HttpClient) {
 
   def getTopComittersOfRepo(owner: String, repository: String): Future[List[GithubCommitter]] = {
-    httpClient.get(GithubApiRoutes.getRepositoryCommitsRoute(owner, repository))
+    httpClient.get(GithubApiRoutes.repositoryCommits(owner, repository))
       .map(rawToSortedGithubComitters)
   }
 
-  private def rawToSortedGithubComitters(jsValue: JsValue): List[GithubCommitter] = {
-    jsValue.as[JsArray].value
-      .map(value => {
-        val name = (value \ "commit" \ "author" \ "name").getOrElse(JsString("Unknown name")).as[String]
-        val email = (value \ "commit" \ "author" \ "email").getOrElse(JsString("Unknown email")).as[String]
-        GithubCommit(name, email)
-      })
+  private def rawToSortedGithubComitters(rawResponse: JsValue): List[GithubCommitter] = {
+    EntitiesMapping.jsonToGithubCommitArray(rawResponse.as[JsArray])
       .groupBy(_.authorEmail)
       .map(groupedCommits => {
         val commits = groupedCommits._2
-        val firstCommit = commits(0)
+        val firstCommit = commits.head
         GithubCommitter(firstCommit.authorName, firstCommit.authorEmail, commits.size)
       })
       .toStream
@@ -57,31 +50,17 @@ class GithubStatsService @Inject()(httpClient: HttpClient) {
   }
 
   def getLanguagesOfRepository(githubRepository: GithubRepository): Future[List[LanguageUsage]] = {
-    httpClient.get(GithubApiRoutes.getLanguagesOfRepositoryRoute(githubRepository.owner, githubRepository.name))
-      .map(rawToLanguageUsage)
-  }
-
-  private def rawToLanguageUsage(jsValue: JsValue): List[LanguageUsage] = {
-    val obj = jsValue.as[JsObject]
-    obj.keys
-      .map(key => {
-        LanguageUsage(key, obj.value.get(key).get.asInstanceOf[JsNumber].value.toInt)
+    httpClient.get(GithubApiRoutes.languagesOfRepository(githubRepository.owner, githubRepository.name))
+      .map(raw => {
+        EntitiesMapping.rawToLanguageUsage(raw.as[JsObject])
       })
-      .toList
   }
 
   def getRepositoriesOfUser(username: String): Future[List[GithubRepository]] = {
-    httpClient.get(GithubApiRoutes.getRepositoryOfUserRoute(username))
-      .map(rawToGithubRepositories(_, username))
-  }
-
-  private def rawToGithubRepositories(jsValue: JsValue, owner: String): List[GithubRepository] = {
-    jsValue.as[JsArray].value
-      .map(value => {
-        val name = (value \ "name").getOrElse(JsString("Unknown name")).as[String]
-        GithubRepository(name, owner)
+    httpClient.get(GithubApiRoutes.repositoriesOfUser(username))
+      .map(raw => {
+        EntitiesMapping.rawToGithubRepositories(raw.as[JsArray])
       })
-      .toList
   }
 
 }
