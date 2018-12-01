@@ -38,6 +38,28 @@ Construction du projet en Fatjar et lancement:
     $ java -Dplay.http.secret.key=cb55e60f67ed735e60a551b58e4d61f1628ae3d3848509c539 -jar target/scala-2.12/play-scala-starter-example-assembly-1.0-SNAPSHOT.jar
 
 
+## Utiliser l'application
+
+US 2-1: Principaux participants d'un projet:
+
+    GET /github/statistics/project/:owner/:repository/top-committers
+    
+    {
+        "comitters": [
+            {
+                "name": "Lukas Rytz",
+                "email": "lukas.rytz@gmail.com",
+                "commits": 21
+            },
+            {
+                "name": "Seth Tisue",
+                "email": "seth@tisue.net",
+                "commits": 14
+            },    
+            ...
+
+            
+
 ## Ressources
 
 - Template Play: https://github.com/playframework/play-scala-starter-example
