@@ -140,6 +140,7 @@ vous pouvez définir une variable AUTHORIZATION_HEADER pour vous connecter à l'
 
 - Applied akka patterns: https://www.oreilly.com/library/view/applied-akka-patterns/9781491934876/
 - Doc scala: https://docs.scala-lang.org
+- Doc akka: https://doc.akka.io
 - Scala best practices: https://github.com/alexandru/scala-best-practices
 - Template Play: https://github.com/playframework/play-scala-starter-example
 - Liste des liens Stackoverflow [en téléchargement au format CSV (38Mo)](http://bitly.com/98K8eH)
