@@ -128,12 +128,12 @@ vous pouvez définir une variable AUTHORIZATION_HEADER pour vous connecter à l'
         {"action": "unsubscribe",   "repository": "kubernetes/kubernetes"}
         
 
-
 ## Qu'est-ce que j'aurai aimé faire avec un peu plus de temps ?
 
-- Intégrer Swagger
+- Intégrer Swagger: https://swagger.io
+- Tests de performances, par exemple avec Gatling: https://gatling.io
 - Configurer Akka pour clusterisation entre JVMs
-- Puis déploiement sur Kubernetes avec auto-scaling, ooohh yeeeahh !
+- Puis déploiement sur Kubernetes avec auto-scaling
 
 
 ## Ressources utilisées
