@@ -1,14 +1,10 @@
-# Homework Tabmo API
-
-```
-Disponible à l'adresse: https://github.com/tabmo/homework/blob/master/backend/api/index.md
-```
+# Homework API
 
 _Time to get things done!_
 
 L'objectif du homework est de développer une application répondant aux besoins exprimés par le responsable fonctionnel. L'application devra exposer une API respectant le style d'architecture REST. Le développement du client (HTML/JS) ne rentre pas dans le cadre de ce homework.
 
-N'hésitez pas à contacter la personne jouant le rôle de responsable fonctionnel (julien.lafont@tabmo.io) si vous avez la moindre question ou incertitude concernant les spécifications décrites ci-dessous.
+N'hésitez pas à contacter la personne jouant le rôle de responsable fonctionnel si vous avez la moindre question ou incertitude concernant les spécifications décrites ci-dessous.
 
 **Important** : Sur les 3 [epics](http://www.fabrice-aimetti.fr/dotclear/index.php?post/2009/08/20/La-difference-entre-les-termes-Agiles-Themes-Epics-et-User-Stories) décrites ci-dessous, nous vous demandons d'en réaliser **2** pour ce homework. Vous êtes libre de sélectionner les thématiques que vous trouvez les plus intéressantes ou les plus challengeantes.
 

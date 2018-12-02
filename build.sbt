@@ -1,4 +1,4 @@
-name := """tabmo-technical-test"""
+name := """scala-technical-test"""
 
 version := "0.1"
 
