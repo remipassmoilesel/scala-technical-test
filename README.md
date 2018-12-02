@@ -89,7 +89,7 @@ US 2-2: Langages les plus utilisés par un utilisateur:
             ...
 
 
-US 3-3: Nombre d'issues par jour pour un projet:
+US 2-3: Nombre d'issues par jour pour un projet:
 
     GET localhost:9000/github/statistics/project/kubernetes/kubernetes/issues
     
@@ -115,9 +115,25 @@ US 3-3: Nombre d'issues par jour pour un projet:
             },
             ...
             
+            
+US 3-1, 3-2, 3-3: Surveiller en temps réel le nombre d'étoiles d'un dépôt à travers un canal Websocket:
 
-## Ressources
+    Utiliser un client comme: https://software.hixie.ch/utilities/js/websocket/
 
-- Template Play: https://github.com/playframework/play-scala-starter-example
+    GET ws://localhost:9000/github/statistics/project/watch-stars
+
+    Exemples de requêtes:
+        
+        {"action": "subscribe",     "repository": "kubernetes/kubernetes", "intervalSec": 10}
+        {"action": "unsubscribe",   "repository": "kubernetes/kubernetes"}
+        
+
+
+## Qu'est-ce que j'aurai aimé faire avec un peu plus de temps ?
+
+- Intégrer Swagger
+- Configurer Akka pour clusterisation entre JVMs
+- Puis déploiement sur Kubernetes avec auto-scaling, ooohh yeeeahh !
+
 
 
