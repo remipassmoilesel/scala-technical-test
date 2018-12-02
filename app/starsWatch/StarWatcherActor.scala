@@ -12,8 +12,8 @@ import scala.concurrent.duration._
 
 object StarWatcherActor {
 
-  def props(clientRef: ActorRef, githubStatsService: GithubStatsService): Props =
-    Props(new StarWatcherActor(clientRef, githubStatsService))
+  def props(wsClientRef: ActorRef, githubStatsService: GithubStatsService): Props =
+    Props(new StarWatcherActor(wsClientRef, githubStatsService))
 
   final case class StartWatch(repository: String, watchTimeSec: Long)
 
@@ -21,7 +21,7 @@ object StarWatcherActor {
 
 }
 
-class StarWatcherActor(clientRef: ActorRef, githubStatsService: GithubStatsService) extends Actor with Timers {
+class StarWatcherActor(wsClientRef: ActorRef, githubStatsService: GithubStatsService) extends Actor with Timers {
 
   override def receive: Receive = {
 
@@ -45,7 +45,7 @@ class StarWatcherActor(clientRef: ActorRef, githubStatsService: GithubStatsServi
     Logger.info(s"Checking stars of $repository interval=$repository")
 
     githubStatsService.getStarNumberOfRepo(GithubRepository.from(repository))
-      .map(stars => clientRef ! Json.toJson(stars).toString())
+      .map(stars => wsClientRef ! Json.toJson(stars).toString())
   }
 
   override def preStart(): Unit = Logger.info(s"StarWatcherActor started")

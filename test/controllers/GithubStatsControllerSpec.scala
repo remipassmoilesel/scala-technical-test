@@ -25,6 +25,7 @@ class GithubStatsControllerSpec extends PlaySpec with MockitoSugar with MockitoM
         .thenReturn(Future {
           TestData.getJsonFile("/topCommitters/rawCommits.json")
         })
+
       val topComitters = route(app, FakeRequest(GET, "/github/statistics/project/firecracker-microvm/firecracker/top-committers")).get
 
       status(topComitters) mustBe Status.OK
