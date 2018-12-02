@@ -9,8 +9,8 @@ import scala.concurrent.Future
 
 class GithubStatsService @Inject()(httpClient: HttpClient) {
 
-  def getTopComittersOfRepo(owner: String, repositoryName: String): Future[List[GithubCommitter]] = {
-    getLastCommitsOfRepository(owner, repositoryName)
+  def getTopComittersOfRepo(githubRepository: GithubRepository): Future[List[GithubCommitter]] = {
+    getLastCommitsOfRepository(githubRepository)
       .map(commits => {
         commits.groupBy(_.authorEmail)
           .map(groupedCommits => {
@@ -26,8 +26,8 @@ class GithubStatsService @Inject()(httpClient: HttpClient) {
 
   }
 
-  private def getLastCommitsOfRepository(owner: String, repositoryName: String): Future[List[GithubCommit]] = {
-    httpClient.get(GithubApiRoutes.repositoryCommits(owner, repositoryName))
+  private def getLastCommitsOfRepository(githubRepository: GithubRepository): Future[List[GithubCommit]] = {
+    httpClient.get(GithubApiRoutes.repositoryCommits(githubRepository.owner, githubRepository.name))
       .map(rawResponse => EntitiesMapping.jsonToGithubCommitArray(rawResponse.as[JsArray]))
   }
 

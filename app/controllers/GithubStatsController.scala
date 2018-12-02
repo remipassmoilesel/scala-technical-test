@@ -1,6 +1,6 @@
 package controllers
 
-import githubStats.{GithubCommitter, GithubStatsService, LanguageUsage}
+import githubStats.{GithubCommitter, GithubRepository, GithubStatsService, LanguageUsage}
 import javax.inject._
 import play.api.Logger
 import play.api.libs.json.{Json, Writes}
@@ -17,7 +17,7 @@ class GithubStatsController @Inject()(cc: ControllerComponents,
     implicit val committerWrites: Writes[GithubCommitter] = Json.writes[GithubCommitter]
 
     Logger.debug(s"Asking for top comitters on project: $owner/$repository")
-    githubService.getTopComittersOfRepo(owner, repository).map(comitters => {
+    githubService.getTopComittersOfRepo(GithubRepository(owner, repository)).map(comitters => {
       Ok(Json.obj("comitters" -> comitters))
     })
   }
