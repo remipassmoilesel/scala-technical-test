@@ -136,4 +136,13 @@ US 3-1, 3-2, 3-3: Surveiller en temps réel le nombre d'étoiles d'un dépôt à
 - Puis déploiement sur Kubernetes avec auto-scaling, ooohh yeeeahh !
 
 
+## Ressources utilisées
+
+- Applied akka patterns: https://www.oreilly.com/library/view/applied-akka-patterns/9781491934876/
+- Doc scala: https://docs.scala-lang.org
+- Scala best practices: https://github.com/alexandru/scala-best-practices
+- Template Play: https://github.com/playframework/play-scala-starter-example
+- Liste des liens Stackoverflow [en téléchargement au format CSV (38Mo)](http://bitly.com/98K8eH)
+
+
 
