@@ -4,7 +4,7 @@ import utils.{HttpClient, HttpClientImpl}
 
 class Module extends AbstractModule {
 
-  override def configure() = {
+  override def configure(): Unit = {
     bind(classOf[HttpClient]).to(classOf[HttpClientImpl])
   }
 

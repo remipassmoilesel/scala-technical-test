@@ -22,15 +22,15 @@ class GithubStatsControllerSpec extends PlaySpec with MockitoSugar with MockitoM
 
     "Should return list of top committers of project" in {
 
-      when(clientMock.get("https://api.github.com/repos/firecracker-microvm/firecracker/commits?per_page=100"))
+      when(clientMock.get("https://api.github.com/repos/firecracker-microvm/firecracker/topCommitters?per_page=100"))
         .thenReturn(Future {
-          TestData.getCommitsRawResponse
+          TestData.getRawCommits
         })
       val topComitters = route(app, FakeRequest(GET, "/github/statistics/project/firecracker-microvm/firecracker/top-committers")).get
 
       status(topComitters) mustBe Status.OK
       contentType(topComitters) mustBe Some("application/json")
-      contentAsJson(topComitters) mustEqual TestData.getOrderedCommitters
+      contentAsJson(topComitters) mustEqual TestData.getTopComitters
     }
 
   }

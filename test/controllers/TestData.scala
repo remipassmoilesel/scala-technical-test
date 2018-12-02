@@ -6,14 +6,16 @@ import scala.io.Source
 
 object TestData {
 
-  def getCommitsRawResponse: JsValue = {
-    val jsonStream = classOf[GithubStatsControllerSpec].getResourceAsStream("/github.stats.topCommitters.rawCommits.json")
-    val text = Source.fromInputStream(jsonStream).mkString
-    Json.parse(text)
+  def getRawCommits: JsValue = {
+    getJsonFile("/topCommitters/rawCommits.json")
   }
 
-  def getOrderedCommitters: JsValue = {
-    val jsonStream = classOf[GithubStatsControllerSpec].getResourceAsStream("/github.stats.topCommitters.response.json")
+  def getTopComitters: JsValue = {
+    getJsonFile("/topCommitters/topComitters.json")
+  }
+
+  private def getJsonFile(resourcePath: String): JsValue = {
+    val jsonStream = getClass.getResourceAsStream(resourcePath)
     val text = Source.fromInputStream(jsonStream).mkString
     Json.parse(text)
   }

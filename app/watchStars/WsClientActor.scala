@@ -41,7 +41,7 @@ class WsClientActor(clientRef: ActorRef, githubStatsService: GithubStatsService)
       clientRef ! Json.toJson(ClientError(message)).toString()
 
     case msg: String =>
-      parseRawAndSend(msg)
+      self ! rawMessageToActorMessage(msg)
 
     case arg =>
       throw new Exception(s"Unexpected message: $arg class=${arg.getClass}")
@@ -74,16 +74,15 @@ class WsClientActor(clientRef: ActorRef, githubStatsService: GithubStatsService)
 
   }
 
-  private def parseRawAndSend(rawMessage: String): Unit = {
+  private def rawMessageToActorMessage(rawMessage: String): Any = {
     Logger.info(s"Received message from ws client: $rawMessage")
 
     try {
-      val message = parseRawMessage(rawMessage)
-      self ! message
+      parseRawMessage(rawMessage)
     } catch {
       case e: Exception =>
         Logger.error(s"Error while parsing message: $e", e)
-        self ! ClientError(s"Unexpected message: $rawMessage")
+        ClientError(s"Unexpected message: $rawMessage")
     }
   }
 

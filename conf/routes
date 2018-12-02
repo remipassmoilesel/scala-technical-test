@@ -1,7 +1,4 @@
 
-# Map static resources from the /public folder to the /assets URL path
-GET        /assets/*file                                                       controllers.Assets.versioned(file)
-
 GET        /github/statistics/user/:username/top-languages                     controllers.GithubStatsController.getTopLanguages(username)
 
 GET        /github/statistics/project/:owner/:repository/top-committers        controllers.GithubStatsController.getTopComitters(owner, repository)

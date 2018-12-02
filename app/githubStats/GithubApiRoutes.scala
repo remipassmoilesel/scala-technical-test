@@ -5,7 +5,7 @@ object GithubApiRoutes {
   val baseUri = "https://api.github.com"
 
   def repositoryCommits(repository: GithubRepository): String = {
-    s"$baseUri/repos/${repository.owner}/${repository.name}/commits?per_page=100"
+    s"$baseUri/repos/${repository.owner}/${repository.name}/topCommitters?per_page=100"
   }
 
   def repositoriesOfUser(username: String): String = {
