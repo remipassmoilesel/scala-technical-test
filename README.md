@@ -42,7 +42,7 @@ Construction du projet en Fatjar et lancement:
 
 US 2-1: Principaux participants d'un projet:
 
-    GET /github/statistics/project/:owner/:repository/top-committers
+    GET localhost:9000/github/statistics/project/:owner/:repository/top-committers
     
     {
         "comitters": [
@@ -58,7 +58,26 @@ US 2-1: Principaux participants d'un projet:
             },    
             ...
 
-            
+
+US 2-2: Langages les plus utilisés par un utilisateur:
+
+    GET localhost:9000/github/statistics/user/KouglofKabyle/top-languages
+
+    {
+        "languages": [
+            {
+                "name": "JavaScript",
+                "bytes": 2370345
+            },
+            {
+                "name": "CSS",
+                "bytes": 811499
+            },
+            {
+                "name": "TypeScript",
+                "bytes": 81572
+            },
+
 
 ## Ressources
 
