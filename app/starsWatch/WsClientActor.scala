@@ -43,9 +43,6 @@ class WsClientActor(clientRef: ActorRef, githubStatsService: GithubStatsService)
     case msg: String =>
       self ! rawMessageToActorMessage(msg)
 
-    case arg =>
-      throw new Exception(s"Unexpected message: $arg class=${arg.getClass}")
-
   }
 
   private def onSubscribe(repository: String, watchTimeSec: Long): Unit = {

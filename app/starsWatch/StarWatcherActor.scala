@@ -31,9 +31,6 @@ class StarWatcherActor(wsClientRef: ActorRef, githubStatsService: GithubStatsSer
     case CheckStars(repository) =>
       onCheckStars(repository)
 
-    case arg =>
-      throw new Exception(s"Unexpected message: $arg class=${arg.getClass}")
-
   }
 
   def onStartWatch(repository: String, intervalSec: Long): Unit = {
