@@ -1,8 +1,9 @@
-package githubStats
+package services
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+import githubStats._
 import javax.inject.Inject
 import play.api.libs.json._
 import utils.HttpClient

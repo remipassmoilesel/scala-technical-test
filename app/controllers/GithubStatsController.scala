@@ -7,6 +7,7 @@ import javax.inject._
 import play.api.Logger
 import play.api.libs.json.{Json, Writes}
 import play.api.mvc._
+import services.GithubStatsService
 
 import scala.concurrent.ExecutionContext
 
