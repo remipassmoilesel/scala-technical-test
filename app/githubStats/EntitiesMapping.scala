@@ -32,4 +32,14 @@ object EntitiesMapping {
       .toList
   }
 
+  def rawSearchToGithubIssues(raw: JsObject): scala.List[GithubIssue] = {
+    val searchResult = (raw \ "items").getOrElse(JsArray()).as[JsArray]
+    searchResult.value
+      .map(value => {
+        val createdAt = (value \ "created_at").getOrElse(JsString("Unknown date")).as[String].substring(0, 10)
+        GithubIssue(createdAt)
+      })
+      .toList
+  }
+
 }

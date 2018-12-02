@@ -1,5 +1,8 @@
 package githubStats
 
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
 import javax.inject.Inject
 import play.api.libs.json._
 import utils.HttpClient
@@ -27,7 +30,7 @@ class GithubStatsService @Inject()(httpClient: HttpClient) {
   }
 
   private def getLastCommitsOfRepository(githubRepository: GithubRepository): Future[List[GithubCommit]] = {
-    httpClient.get(GithubApiRoutes.repositoryCommits(githubRepository.owner, githubRepository.name))
+    httpClient.get(GithubApiRoutes.repositoryCommits(githubRepository))
       .map(rawResponse => EntitiesMapping.jsonToGithubCommitArray(rawResponse.as[JsArray]))
   }
 
@@ -53,17 +56,45 @@ class GithubStatsService @Inject()(httpClient: HttpClient) {
   }
 
   private def getLanguagesOfRepository(githubRepository: GithubRepository): Future[List[LanguageUsage]] = {
-    httpClient.get(GithubApiRoutes.languagesOfRepository(githubRepository.owner, githubRepository.name))
-      .map(raw => {
-        EntitiesMapping.rawToLanguageUsage(raw.as[JsObject])
-      })
+    httpClient.get(GithubApiRoutes.languagesOfRepository(githubRepository))
+      .map(raw => EntitiesMapping.rawToLanguageUsage(raw.as[JsObject]))
   }
 
   private def getRepositoriesOfUser(username: String): Future[List[GithubRepository]] = {
     httpClient.get(GithubApiRoutes.repositoriesOfUser(username))
-      .map(raw => {
-        EntitiesMapping.rawToGithubRepositories(raw.as[JsArray])
-      })
+      .map(raw => EntitiesMapping.rawToGithubRepositories(raw.as[JsArray]))
+  }
+
+  def getIssuesPerDayForRepository(githubRepository: GithubRepository,
+                                   endDate: LocalDateTime,
+                                   periodDays: Int): Future[List[GithubIssueAggregForDay]] = {
+
+    val formatter = DateTimeFormatter.ofPattern("dd/MM")
+    val startDate = endDate.minusDays(periodDays)
+
+    val issuesPerDay = Future.sequence(
+      Stream.range(0, periodDays)
+        .map(startDate.plusDays(_))
+        .map(getIssuesForDay(githubRepository, _))
+        .toList
+    )
+
+    issuesPerDay.map(allDaysIssues => {
+      allDaysIssues
+        .zipWithIndex
+        .map {
+          case (oneDayIssues, index) =>
+            val issues = oneDayIssues.size
+            val shortDate: String = startDate.plusDays(index).format(formatter)
+            GithubIssueAggregForDay(shortDate, issues, index, issues)
+        }
+    })
+  }
+
+  private def getIssuesForDay(githubRepository: GithubRepository, day: LocalDateTime): Future[List[GithubIssue]] = {
+    val formattedDay = day.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+    httpClient.get(GithubApiRoutes.searchIssuesCreatedOnDay(githubRepository, formattedDay))
+      .map(raw => EntitiesMapping.rawSearchToGithubIssues(raw.as[JsObject]))
   }
 
 }

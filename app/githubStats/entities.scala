@@ -15,3 +15,12 @@ case class GithubRepository(name: String, owner: String) {
 case class LanguageUsage(name: String, bytes: Int) {
 
 }
+
+case class GithubIssue(createdOnDay: String) {
+
+}
+
+case class GithubIssueAggregForDay(date: String, issues: Int, x: Int, y: Int) {
+
+}
+

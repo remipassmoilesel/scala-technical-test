@@ -86,7 +86,35 @@ US 2-2: Langages les plus utilisés par un utilisateur:
                 "name": "TypeScript",
                 "bytes": 81572
             },
+            ...
 
+
+US 3-3: Nombre d'issues par jour pour un projet:
+
+    GET localhost:9000/github/statistics/project/kubernetes/kubernetes/issues
+    
+    {
+        "issuesPerDay": [
+            {
+                "date": "27/11",
+                "issues": 43,
+                "x": 0,
+                "y": 43
+            },
+            {
+                "date": "28/11",
+                "issues": 52,
+                "x": 1,
+                "y": 52
+            },
+            {
+                "date": "29/11",
+                "issues": 44,
+                "x": 2,
+                "y": 44
+            },
+            ...
+            
 
 ## Ressources
 
