@@ -32,7 +32,7 @@ class GithubStatsService @Inject()(httpClient: HttpClient) {
 
   private def getLastCommitsOfRepository(githubRepository: GithubRepository): Future[List[GithubCommit]] = {
     httpClient.get(GithubApiRoutes.repositoryCommits(githubRepository))
-      .map(rawResponse => EntitiesMapping.jsonToGithubCommitArray(rawResponse.as[JsArray]))
+      .map(rawResponse => GithubEntitiesMapper.jsonToGithubCommitArray(rawResponse.as[JsArray]))
   }
 
   def getTopLanguagesOfUser(username: String): Future[List[LanguageUsage]] = {
@@ -58,12 +58,12 @@ class GithubStatsService @Inject()(httpClient: HttpClient) {
 
   private def getLanguagesOfRepository(githubRepository: GithubRepository): Future[List[LanguageUsage]] = {
     httpClient.get(GithubApiRoutes.languagesOfRepository(githubRepository))
-      .map(raw => EntitiesMapping.rawToLanguageUsage(raw.as[JsObject]))
+      .map(raw => GithubEntitiesMapper.rawToLanguageUsage(raw.as[JsObject]))
   }
 
   private def getRepositoriesOfUser(username: String): Future[List[GithubRepository]] = {
     httpClient.get(GithubApiRoutes.repositoriesOfUser(username))
-      .map(raw => EntitiesMapping.rawToGithubRepositories(raw.as[JsArray]))
+      .map(raw => GithubEntitiesMapper.rawToGithubRepositories(raw.as[JsArray]))
   }
 
   def getIssuesPerDayForRepository(githubRepository: GithubRepository,
@@ -95,7 +95,12 @@ class GithubStatsService @Inject()(httpClient: HttpClient) {
   private def getIssuesForDay(githubRepository: GithubRepository, day: LocalDateTime): Future[List[GithubIssue]] = {
     val formattedDay = day.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
     httpClient.get(GithubApiRoutes.searchIssuesCreatedOnDay(githubRepository, formattedDay))
-      .map(raw => EntitiesMapping.rawSearchToGithubIssues(raw.as[JsObject]))
+      .map(raw => GithubEntitiesMapper.rawSearchToGithubIssues(raw.as[JsObject]))
+  }
+
+  def getStarNumberOfRepo(githubRepository: GithubRepository): Future[GithubRepositoryStars] = {
+    httpClient.get(GithubApiRoutes.repository(githubRepository))
+      .map(raw => GithubEntitiesMapper.rawToGithubRepositoryStars(raw.as[JsObject]))
   }
 
 }

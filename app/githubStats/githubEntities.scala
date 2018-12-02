@@ -24,3 +24,7 @@ case class GithubIssueAggregForDay(date: String, issues: Int, x: Int, y: Int) {
 
 }
 
+case class GithubRepositoryStars(fullName: String, stars: Int) {
+
+}
+

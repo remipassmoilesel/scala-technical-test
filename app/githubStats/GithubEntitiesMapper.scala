@@ -2,7 +2,7 @@ package githubStats
 
 import play.api.libs.json._
 
-object EntitiesMapping {
+object GithubEntitiesMapper {
 
   def jsonToGithubCommitArray(raw: JsArray): List[GithubCommit] = {
     raw.value
@@ -17,7 +17,7 @@ object EntitiesMapping {
   def rawToLanguageUsage(raw: JsObject): List[LanguageUsage] = {
     raw.keys
       .map(key => {
-        LanguageUsage(key, raw.value.get(key).get.asInstanceOf[JsNumber].value.toInt)
+        LanguageUsage(key, raw.value(key).asInstanceOf[JsNumber].value.toInt)
       })
       .toList
   }
@@ -40,6 +40,13 @@ object EntitiesMapping {
         GithubIssue(createdAt)
       })
       .toList
+  }
+
+  def rawToGithubRepositoryStars(raw: JsObject): GithubRepositoryStars = {
+    val starCount = (raw \ "stargazers_count").getOrElse(JsNumber(-1)).as[Int]
+    val fullName = (raw \ "full_name").getOrElse(JsString("Unknown full name")).as[String]
+
+    GithubRepositoryStars(fullName, starCount)
   }
 
 }
