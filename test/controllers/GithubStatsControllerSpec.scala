@@ -20,17 +20,50 @@ class GithubStatsControllerSpec extends PlaySpec with MockitoSugar with MockitoM
 
   "GithubStatsController" should {
 
-    "Should return list of top committers of project" in {
-
+    "Should return list of top committers of specified project" in {
       when(clientMock.get("https://api.github.com/repos/firecracker-microvm/firecracker/topCommitters?per_page=100"))
         .thenReturn(Future {
-          TestData.getRawCommits
+          TestData.getJsonFile("/topCommitters/rawCommits.json")
         })
       val topComitters = route(app, FakeRequest(GET, "/github/statistics/project/firecracker-microvm/firecracker/top-committers")).get
 
       status(topComitters) mustBe Status.OK
       contentType(topComitters) mustBe Some("application/json")
-      contentAsJson(topComitters) mustEqual TestData.getTopComitters
+      contentAsJson(topComitters) mustEqual TestData.getJsonFile("/topCommitters/topComitters.json")
+    }
+
+    "Should return list of top language of specified user" in {
+
+      when(clientMock.get("https://api.github.com/users/KouglofKabyle/repos?per_page=100"))
+        .thenReturn(Future {
+          TestData.getJsonFile("/topLanguages/repoList.json")
+        })
+
+      when(clientMock.get("https://api.github.com/repos/KouglofKabyle/amorcePAI/languages"))
+        .thenReturn(Future {
+          TestData.getJsonFile("/topLanguages/amorcePAI.json")
+        })
+
+      when(clientMock.get("https://api.github.com/repos/KouglofKabyle/ngDraggable/languages"))
+        .thenReturn(Future {
+          TestData.getJsonFile("/topLanguages/ngDraggable.json")
+        })
+
+      when(clientMock.get("https://api.github.com/repos/KouglofKabyle/projet-gl-2015/languages"))
+        .thenReturn(Future {
+          TestData.getJsonFile("/topLanguages/projet-gl-2015.json")
+        })
+
+      when(clientMock.get("https://api.github.com/repos/KouglofKabyle/ui-jar/languages"))
+        .thenReturn(Future {
+          TestData.getJsonFile("/topLanguages/ui-jar.json")
+        })
+
+      val topLanguages = route(app, FakeRequest(GET, "/github/statistics/user/KouglofKabyle/top-languages")).get
+
+      status(topLanguages) mustBe Status.OK
+      contentType(topLanguages) mustBe Some("application/json")
+      contentAsJson(topLanguages) mustEqual TestData.getJsonFile("/topLanguages/topLanguages.json")
     }
 
   }

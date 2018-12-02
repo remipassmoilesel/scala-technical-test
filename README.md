@@ -49,7 +49,7 @@ vous pouvez définir une variable AUTHORIZATION_HEADER pour vous connecter à l'
     $ sbt run
     
 
-US 2-1: Principaux participants d'un projet:
+**US 2-1**: Principaux participants d'un projet:
 
     GET localhost:9000/github/statistics/project/:owner/:repository/top-committers
     
@@ -68,7 +68,7 @@ US 2-1: Principaux participants d'un projet:
             ...
 
 
-US 2-2: Langages les plus utilisés par un utilisateur:
+**US 2-2**: Langages les plus utilisés par un utilisateur:
 
     GET localhost:9000/github/statistics/user/KouglofKabyle/top-languages
 

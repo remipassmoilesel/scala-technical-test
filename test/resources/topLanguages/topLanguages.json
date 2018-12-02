@@ -1,0 +1,20 @@
+{
+  "languages": [
+    {
+      "name": "JavaScript",
+      "bytes": 2370345
+    },
+    {
+      "name": "CSS",
+      "bytes": 811499
+    },
+    {
+      "name": "TypeScript",
+      "bytes": 81572
+    },
+    {
+      "name": "HTML",
+      "bytes": 33574
+    }
+  ]
+}

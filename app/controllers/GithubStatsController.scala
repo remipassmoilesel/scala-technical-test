@@ -30,7 +30,7 @@ class GithubStatsController @Inject()(cc: ControllerComponents,
 
     Logger.debug(s"Asking for top comitters on project: $owner/$repository")
 
-    githubStatsService.getTopComittersOfRepo(GithubRepository(owner, repository)).map(comitters => {
+    githubStatsService.getTopComittersOfRepo(GithubRepository(repository, owner)).map(comitters => {
       Ok(Json.obj("comitters" -> comitters))
     })
   }
@@ -51,7 +51,7 @@ class GithubStatsController @Inject()(cc: ControllerComponents,
 
     val endDate = LocalDateTime.now().minusDays(1)
     val days = 25 // it's a small month
-    githubStatsService.getIssuesPerDayForRepository(GithubRepository(owner, repository), endDate, days).map(issues => {
+    githubStatsService.getIssuesPerDayForRepository(GithubRepository(repository, owner), endDate, days).map(issues => {
       Ok(Json.obj("issuesPerDay" -> issues))
     })
   }
