@@ -40,6 +40,15 @@ Construction du projet en Fatjar et lancement:
 
 ## Utiliser l'application
 
+**Remarque**:
+
+Pour éviter d'atteindre trop rapidement la limite maximum de requêtes sur des dépôts volumineux,
+vous pouvez définir une variable AUTHORIZATION_HEADER pour vous connecter à l'API Github:
+
+    $ export AUTHORIZATION_HEADER="Basic XXXXXXXXXXXX"
+    $ sbt run
+    
+
 US 2-1: Principaux participants d'un projet:
 
     GET localhost:9000/github/statistics/project/:owner/:repository/top-committers
