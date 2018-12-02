@@ -89,7 +89,7 @@ vous pouvez définir une variable AUTHORIZATION_HEADER pour vous connecter à l'
             ...
 
 
-US 2-3: Nombre d'issues par jour pour un projet:
+**US 2-3**: Nombre d'issues par jour pour un projet:
 
     GET localhost:9000/github/statistics/project/kubernetes/kubernetes/issues
     
@@ -116,7 +116,7 @@ US 2-3: Nombre d'issues par jour pour un projet:
             ...
             
             
-US 3-1, 3-2, 3-3: Surveiller en temps réel le nombre d'étoiles d'un dépôt à travers un canal Websocket:
+**US 3-1, 3-2, 3-3**: Surveiller en temps réel le nombre d'étoiles d'un dépôt à travers un canal Websocket:
 
     Utiliser un client comme: https://software.hixie.ch/utilities/js/websocket/
 

@@ -28,7 +28,7 @@ class StarWatcherActorSpec extends TestKit(ActorSystem("StarWatcherActorSpec"))
 
   "StarWatcherActorSpec" should {
 
-    "Should start watching" in {
+    "Should start watching stars" in {
       val githubStatsService = mock[GithubStatsService]
       val starWatcher = system.actorOf(StarWatcherActor.props(testActor, githubStatsService))
 
