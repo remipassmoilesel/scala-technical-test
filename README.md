@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Sujet original du test technique: [documentation/sujet-original.md]
+Sujet original du test technique: [documentation/sujet-original.md](documentation/sujet-original.md)
 
 Deux epics sur trois sont à réaliser. J'ai choisi:
 
@@ -17,7 +17,7 @@ Utiliser GNU/Linux et avoir installé:
 - Openjdk >= 8
 - sbt
 
-Voir: [documentation/installation-preprequis.md]
+Voir: [documentation/installation-preprequis.md](documentation/installation-preprequis.md)
 
 
 ## Commandes de base
@@ -30,7 +30,7 @@ Rapport de couverture de test:
     
     $ sbt clean coverage test coverageReport
 
-Voir ensuite: [target/scala-2.12/scoverage-report/index.html]
+Voir ensuite: [target/scala-2.12/scoverage-report/index.html](target/scala-2.12/scoverage-report/index.html)
     
 Construction du projet en Fatjar et lancement:
 
@@ -130,9 +130,10 @@ vous pouvez définir une variable AUTHORIZATION_HEADER pour vous connecter à l'
 
 ## Qu'est-ce que j'aurai aimé faire avec un peu plus de temps ?
 
+- Utilisation des Flows Akka avec Back-pressure
 - Intégrer Swagger: https://swagger.io
 - Tests de performances, par exemple avec Gatling: https://gatling.io
-- Configurer Akka pour clusterisation entre JVMs
+- Configurer Akka pour clusterisation des acteurs entre JVMs
 - Puis déploiement sur Kubernetes avec auto-scaling
 
 
