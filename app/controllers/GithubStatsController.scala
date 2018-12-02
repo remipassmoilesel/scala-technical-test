@@ -12,7 +12,7 @@ import play.api.libs.json.{Json, Writes}
 import play.api.libs.streams.ActorFlow
 import play.api.mvc._
 import services.GithubStatsService
-import watchStars.WsClientActor
+import starsWatch.WsClientActor
 
 import scala.concurrent.ExecutionContext
 

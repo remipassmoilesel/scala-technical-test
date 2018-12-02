@@ -1,11 +1,11 @@
-package watchStars
+package starsWatch
 
 import akka.actor.{Actor, ActorRef, Props}
 import play.api.Logger
 import play.api.libs.json._
 import services.GithubStatsService
-import watchStars.StarWatcherActor.StartWatch
-import watchStars.WsClientActor.{ClientError, Subscribe, Unsubscribe}
+import starsWatch.StarWatcherActor.StartWatch
+import starsWatch.WsClientActor.{ClientError, Subscribe, Unsubscribe}
 
 import scala.collection.mutable
 

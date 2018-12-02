@@ -1,11 +1,11 @@
-package watchStars
+package starsWatch
 
 import akka.actor.{Actor, ActorRef, Props, Timers}
 import githubStats.GithubRepository
 import play.api.Logger
 import play.api.libs.json.Json
 import services.GithubStatsService
-import watchStars.StarWatcherActor.{CheckStars, StartWatch}
+import starsWatch.StarWatcherActor.{CheckStars, StartWatch}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
