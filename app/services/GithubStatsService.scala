@@ -71,10 +71,10 @@ class GithubStatsService @Inject()(httpClient: HttpClient) {
                                    periodDays: Int): Future[List[GithubIssueAggregForDay]] = {
 
     val formatter = DateTimeFormatter.ofPattern("dd/MM")
-    val startDate = endDate.minusDays(periodDays)
+    val startDate = endDate.minusDays(periodDays - 1)
 
     val issuesPerDay = Future.sequence(
-      Stream.range(0, periodDays + 1)
+      Stream.range(0, periodDays)
         .map(startDate.plusDays(_))
         .map(getIssuesForDay(githubRepository, _))
         .toList

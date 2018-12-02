@@ -66,6 +66,30 @@ class GithubStatsControllerSpec extends PlaySpec with MockitoSugar with MockitoM
       contentAsJson(topLanguages) mustEqual TestData.getJsonFile("/topLanguages/topLanguages.json")
     }
 
+    "Should return number of issue per day" in {
+
+      when(clientMock.get("https://api.github.com/search/issues?q=repo:kubernetes/kubernetes+created:2018-10-07&per_page=100"))
+        .thenReturn(Future {
+          TestData.getJsonFile("/issuesPerDay/07.json")
+        })
+
+      when(clientMock.get("https://api.github.com/search/issues?q=repo:kubernetes/kubernetes+created:2018-10-08&per_page=100"))
+        .thenReturn(Future {
+          TestData.getJsonFile("/issuesPerDay/08.json")
+        })
+
+      when(clientMock.get("https://api.github.com/search/issues?q=repo:kubernetes/kubernetes+created:2018-10-09&per_page=100"))
+        .thenReturn(Future {
+          TestData.getJsonFile("/issuesPerDay/09.json")
+        })
+
+      val topLanguages = route(app, FakeRequest(GET, "/github/statistics/project/kubernetes/kubernetes/issues?endDate=2018-10-09&numberOfDays=3")).get
+
+      status(topLanguages) mustBe Status.OK
+      contentType(topLanguages) mustBe Some("application/json")
+      contentAsJson(topLanguages) mustEqual TestData.getJsonFile("/issuesPerDay/issuesPerDay.json")
+    }
+
   }
 
   private def createMockedApp() = {

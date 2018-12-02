@@ -1,0 +1,302 @@
+{
+  "total_count": 2,
+  "incomplete_results": false,
+  "items": [
+    {
+      "url": "https://api.github.com/repos/kubernetes/kubernetes/issues/69500",
+      "repository_url": "https://api.github.com/repos/kubernetes/kubernetes",
+      "labels_url": "https://api.github.com/repos/kubernetes/kubernetes/issues/69500/labels{/name}",
+      "comments_url": "https://api.github.com/repos/kubernetes/kubernetes/issues/69500/comments",
+      "events_url": "https://api.github.com/repos/kubernetes/kubernetes/issues/69500/events",
+      "html_url": "https://github.com/kubernetes/kubernetes/pull/69500",
+      "id": 367597576,
+      "node_id": "MDExOlB1bGxSZXF1ZXN0MjIwOTc1OTgx",
+      "number": 69500,
+      "title": "Makes kubectl respect the `LC_ALL` and `LC_MESSAGES` env vars",
+      "user": {
+        "login": "m1kola",
+        "id": 509198,
+        "node_id": "MDQ6VXNlcjUwOTE5OA==",
+        "avatar_url": "https://avatars1.githubusercontent.com/u/509198?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/m1kola",
+        "html_url": "https://github.com/m1kola",
+        "followers_url": "https://api.github.com/users/m1kola/followers",
+        "following_url": "https://api.github.com/users/m1kola/following{/other_user}",
+        "gists_url": "https://api.github.com/users/m1kola/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/m1kola/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/m1kola/subscriptions",
+        "organizations_url": "https://api.github.com/users/m1kola/orgs",
+        "repos_url": "https://api.github.com/users/m1kola/repos",
+        "events_url": "https://api.github.com/users/m1kola/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/m1kola/received_events",
+        "type": "User",
+        "site_admin": false
+      },
+      "labels": [
+        {
+          "id": 414883982,
+          "node_id": "MDU6TGFiZWw0MTQ4ODM5ODI=",
+          "url": "https://api.github.com/repos/kubernetes/kubernetes/labels/approved",
+          "name": "approved",
+          "color": "0ffa16",
+          "default": false
+        },
+        {
+          "id": 138247961,
+          "node_id": "MDU6TGFiZWwxMzgyNDc5NjE=",
+          "url": "https://api.github.com/repos/kubernetes/kubernetes/labels/area/kubectl",
+          "name": "area/kubectl",
+          "color": "0052cc",
+          "default": false
+        },
+        {
+          "id": 477397086,
+          "node_id": "MDU6TGFiZWw0NzczOTcwODY=",
+          "url": "https://api.github.com/repos/kubernetes/kubernetes/labels/cncf-cla:%20yes",
+          "name": "cncf-cla: yes",
+          "color": "bfe5bf",
+          "default": false
+        },
+        {
+          "id": 267761362,
+          "node_id": "MDU6TGFiZWwyNjc3NjEzNjI=",
+          "url": "https://api.github.com/repos/kubernetes/kubernetes/labels/kind/feature",
+          "name": "kind/feature",
+          "color": "c7def8",
+          "default": false
+        },
+        {
+          "id": 148225179,
+          "node_id": "MDU6TGFiZWwxNDgyMjUxNzk=",
+          "url": "https://api.github.com/repos/kubernetes/kubernetes/labels/lgtm",
+          "name": "lgtm",
+          "color": "15dd18",
+          "default": false
+        },
+        {
+          "id": 200149833,
+          "node_id": "MDU6TGFiZWwyMDAxNDk4MzM=",
+          "url": "https://api.github.com/repos/kubernetes/kubernetes/labels/release-note",
+          "name": "release-note",
+          "color": "c2e0c6",
+          "default": false
+        },
+        {
+          "id": 450823910,
+          "node_id": "MDU6TGFiZWw0NTA4MjM5MTA=",
+          "url": "https://api.github.com/repos/kubernetes/kubernetes/labels/sig/cli",
+          "name": "sig/cli",
+          "color": "d2b48c",
+          "default": false
+        },
+        {
+          "id": 253450978,
+          "node_id": "MDU6TGFiZWwyNTM0NTA5Nzg=",
+          "url": "https://api.github.com/repos/kubernetes/kubernetes/labels/size/L",
+          "name": "size/L",
+          "color": "ee9900",
+          "default": false
+        }
+      ],
+      "state": "closed",
+      "locked": false,
+      "assignee": {
+        "login": "soltysh",
+        "id": 576341,
+        "node_id": "MDQ6VXNlcjU3NjM0MQ==",
+        "avatar_url": "https://avatars2.githubusercontent.com/u/576341?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/soltysh",
+        "html_url": "https://github.com/soltysh",
+        "followers_url": "https://api.github.com/users/soltysh/followers",
+        "following_url": "https://api.github.com/users/soltysh/following{/other_user}",
+        "gists_url": "https://api.github.com/users/soltysh/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/soltysh/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/soltysh/subscriptions",
+        "organizations_url": "https://api.github.com/users/soltysh/orgs",
+        "repos_url": "https://api.github.com/users/soltysh/repos",
+        "events_url": "https://api.github.com/users/soltysh/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/soltysh/received_events",
+        "type": "User",
+        "site_admin": false
+      },
+      "assignees": [
+        {
+          "login": "soltysh",
+          "id": 576341,
+          "node_id": "MDQ6VXNlcjU3NjM0MQ==",
+          "avatar_url": "https://avatars2.githubusercontent.com/u/576341?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/soltysh",
+          "html_url": "https://github.com/soltysh",
+          "followers_url": "https://api.github.com/users/soltysh/followers",
+          "following_url": "https://api.github.com/users/soltysh/following{/other_user}",
+          "gists_url": "https://api.github.com/users/soltysh/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/soltysh/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/soltysh/subscriptions",
+          "organizations_url": "https://api.github.com/users/soltysh/orgs",
+          "repos_url": "https://api.github.com/users/soltysh/repos",
+          "events_url": "https://api.github.com/users/soltysh/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/soltysh/received_events",
+          "type": "User",
+          "site_admin": false
+        }
+      ],
+      "milestone": null,
+      "comments": 5,
+      "created_at": "2018-10-07T21:54:23Z",
+      "updated_at": "2018-10-12T18:20:48Z",
+      "closed_at": "2018-10-12T18:20:00Z",
+      "author_association": "MEMBER",
+      "pull_request": {
+        "url": "https://api.github.com/repos/kubernetes/kubernetes/pulls/69500",
+        "html_url": "https://github.com/kubernetes/kubernetes/pull/69500",
+        "diff_url": "https://github.com/kubernetes/kubernetes/pull/69500.diff",
+        "patch_url": "https://github.com/kubernetes/kubernetes/pull/69500.patch"
+      },
+      "body": "**What this PR does / why we need it**:\r\n\r\nThe `LC_ALL` and `LC_MESSAGES` env vars can now be used to set desired locale for `kubectl` while keeping `LANG` unchanged.\r\n\r\n**Which issue(s) this PR fixes**:\r\nFixes https://github.com/kubernetes/kubectl/issues/476\r\n\r\n**Special notes for your reviewer**:\r\n\r\n**UPD:** This PR now also implements support of `LC_ALL` (see https://github.com/kubernetes/kubernetes/pull/69500#issuecomment-428919008)\r\n\r\nI'm not sure if we want to support `LANGUAGE` and `LC_ALL` to implement the priority order described [here](https://www.gnu.org/software/gettext/manual/html_node/Locale-Environment-Variables.html). See [my question](https://github.com/kubernetes/kubectl/issues/476#issuecomment-427690944) in the original issue.\r\n\r\n\r\n**Release note**:\r\n\r\n```release-note\r\nThe `LC_ALL` and `LC_MESSAGES` env vars can now be used to set desired locale for `kubectl` while keeping `LANG` unchanged.\r\n```\r\n\r\n/sig cli",
+      "score": 1
+    },
+    {
+      "url": "https://api.github.com/repos/kubernetes/kubernetes/issues/69499",
+      "repository_url": "https://api.github.com/repos/kubernetes/kubernetes",
+      "labels_url": "https://api.github.com/repos/kubernetes/kubernetes/issues/69499/labels{/name}",
+      "comments_url": "https://api.github.com/repos/kubernetes/kubernetes/issues/69499/comments",
+      "events_url": "https://api.github.com/repos/kubernetes/kubernetes/issues/69499/events",
+      "html_url": "https://github.com/kubernetes/kubernetes/pull/69499",
+      "id": 367570224,
+      "node_id": "MDExOlB1bGxSZXF1ZXN0MjIwOTU4MTQ4",
+      "number": 69499,
+      "title": "WIP: Test const-correctness",
+      "user": {
+        "login": "justinsb",
+        "id": 100893,
+        "node_id": "MDQ6VXNlcjEwMDg5Mw==",
+        "avatar_url": "https://avatars2.githubusercontent.com/u/100893?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/justinsb",
+        "html_url": "https://github.com/justinsb",
+        "followers_url": "https://api.github.com/users/justinsb/followers",
+        "following_url": "https://api.github.com/users/justinsb/following{/other_user}",
+        "gists_url": "https://api.github.com/users/justinsb/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/justinsb/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/justinsb/subscriptions",
+        "organizations_url": "https://api.github.com/users/justinsb/orgs",
+        "repos_url": "https://api.github.com/users/justinsb/repos",
+        "events_url": "https://api.github.com/users/justinsb/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/justinsb/received_events",
+        "type": "User",
+        "site_admin": false
+      },
+      "labels": [
+        {
+          "id": 136601536,
+          "node_id": "MDU6TGFiZWwxMzY2MDE1MzY=",
+          "url": "https://api.github.com/repos/kubernetes/kubernetes/labels/area/apiserver",
+          "name": "area/apiserver",
+          "color": "0052cc",
+          "default": false
+        },
+        {
+          "id": 477397086,
+          "node_id": "MDU6TGFiZWw0NzczOTcwODY=",
+          "url": "https://api.github.com/repos/kubernetes/kubernetes/labels/cncf-cla:%20yes",
+          "name": "cncf-cla: yes",
+          "color": "bfe5bf",
+          "default": false
+        },
+        {
+          "id": 680152113,
+          "node_id": "MDU6TGFiZWw2ODAxNTIxMTM=",
+          "url": "https://api.github.com/repos/kubernetes/kubernetes/labels/do-not-merge/release-note-label-needed",
+          "name": "do-not-merge/release-note-label-needed",
+          "color": "e11d21",
+          "default": false
+        },
+        {
+          "id": 687500047,
+          "node_id": "MDU6TGFiZWw2ODc1MDAwNDc=",
+          "url": "https://api.github.com/repos/kubernetes/kubernetes/labels/do-not-merge/work-in-progress",
+          "name": "do-not-merge/work-in-progress",
+          "color": "e11d21",
+          "default": false
+        },
+        {
+          "id": 1047217136,
+          "node_id": "MDU6TGFiZWwxMDQ3MjE3MTM2",
+          "url": "https://api.github.com/repos/kubernetes/kubernetes/labels/needs-kind",
+          "name": "needs-kind",
+          "color": "ededed",
+          "default": false
+        },
+        {
+          "id": 240247879,
+          "node_id": "MDU6TGFiZWwyNDAyNDc4Nzk=",
+          "url": "https://api.github.com/repos/kubernetes/kubernetes/labels/needs-rebase",
+          "name": "needs-rebase",
+          "color": "BDBDBD",
+          "default": false
+        },
+        {
+          "id": 173493835,
+          "node_id": "MDU6TGFiZWwxNzM0OTM4MzU=",
+          "url": "https://api.github.com/repos/kubernetes/kubernetes/labels/sig/api-machinery",
+          "name": "sig/api-machinery",
+          "color": "d2b48c",
+          "default": false
+        },
+        {
+          "id": 450823910,
+          "node_id": "MDU6TGFiZWw0NTA4MjM5MTA=",
+          "url": "https://api.github.com/repos/kubernetes/kubernetes/labels/sig/cli",
+          "name": "sig/cli",
+          "color": "d2b48c",
+          "default": false
+        },
+        {
+          "id": 125550211,
+          "node_id": "MDU6TGFiZWwxMjU1NTAyMTE=",
+          "url": "https://api.github.com/repos/kubernetes/kubernetes/labels/sig/scheduling",
+          "name": "sig/scheduling",
+          "color": "d2b48c",
+          "default": false
+        },
+        {
+          "id": 483069764,
+          "node_id": "MDU6TGFiZWw0ODMwNjk3NjQ=",
+          "url": "https://api.github.com/repos/kubernetes/kubernetes/labels/sig/testing",
+          "name": "sig/testing",
+          "color": "d2b48c",
+          "default": false
+        },
+        {
+          "id": 253451057,
+          "node_id": "MDU6TGFiZWwyNTM0NTEwNTc=",
+          "url": "https://api.github.com/repos/kubernetes/kubernetes/labels/size/XL",
+          "name": "size/XL",
+          "color": "ee5500",
+          "default": false
+        }
+      ],
+      "state": "open",
+      "locked": false,
+      "assignee": null,
+      "assignees": [],
+      "milestone": null,
+      "comments": 5,
+      "created_at": "2018-10-07T16:27:30Z",
+      "updated_at": "2018-11-14T15:07:41Z",
+      "closed_at": null,
+      "author_association": "MEMBER",
+      "pull_request": {
+        "url": "https://api.github.com/repos/kubernetes/kubernetes/pulls/69499",
+        "html_url": "https://github.com/kubernetes/kubernetes/pull/69499",
+        "diff_url": "https://github.com/kubernetes/kubernetes/pull/69499.diff",
+        "patch_url": "https://github.com/kubernetes/kubernetes/pull/69499.patch"
+      },
+      "body": null,
+      "score": 1
+    }
+  ]
+}
