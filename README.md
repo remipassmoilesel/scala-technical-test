@@ -1,5 +1,8 @@
 # Test technique Scala / Play framework
 
+[![Build Status](https://travis-ci.org/remipassmoilesel/scala-technical-test.svg?branch=develop)](https://travis-ci.org/remipassmoilesel/scala-technical-test)
+
+
 ## Introduction
 
 Sujet original du test technique: [documentation/sujet-original.md](documentation/sujet-original.md)
