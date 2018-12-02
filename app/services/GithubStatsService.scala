@@ -74,7 +74,7 @@ class GithubStatsService @Inject()(httpClient: HttpClient) {
     val startDate = endDate.minusDays(periodDays)
 
     val issuesPerDay = Future.sequence(
-      Stream.range(0, periodDays)
+      Stream.range(0, periodDays + 1)
         .map(startDate.plusDays(_))
         .map(getIssuesForDay(githubRepository, _))
         .toList
