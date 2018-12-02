@@ -4,7 +4,8 @@ import akka.actor.{Actor, ActorRef, Props}
 import play.api.Logger
 import play.api.libs.json._
 import services.GithubStatsService
-import watchStars.WsClientActor.{InvalidMessage, Subscribe, Unsubscribe}
+import watchStars.StarWatcherActor.StartWatch
+import watchStars.WsClientActor.{ClientError, Subscribe, Unsubscribe}
 
 import scala.collection.mutable
 
@@ -16,27 +17,28 @@ object WsClientActor {
 
   final case class Unsubscribe(repository: String)
 
-  final case class InvalidMessage(message: String)
+  final case class ClientError(message: String)
 
   implicit val subscribeReads: Reads[Subscribe] = Json.reads[Subscribe]
   implicit val unsubscribeReads: Reads[Unsubscribe] = Json.reads[Unsubscribe]
+  implicit val clientErrorWrites: Writes[ClientError] = Json.writes[ClientError]
 
 }
 
 class WsClientActor(clientRef: ActorRef, githubStatsService: GithubStatsService) extends Actor {
 
-  val clientSubscriptions = mutable.Map[String, ActorRef]()
+  private val clientSubscriptions = mutable.Map[String, ActorRef]()
 
   override def receive: Receive = {
 
     case Subscribe(repository, intervalSec) =>
-      subscribeToRepository(repository, intervalSec)
+      onSubscribe(repository, intervalSec)
 
     case Unsubscribe(repository) =>
-      unsubscribeToRepository(repository)
+      onUnsubscribe(repository)
 
-    case InvalidMessage(message) =>
-      clientRef ! message
+    case ClientError(message) =>
+      clientRef ! Json.toJson(ClientError(message)).toString()
 
     case msg: String =>
       parseRawAndSend(msg)
@@ -46,18 +48,34 @@ class WsClientActor(clientRef: ActorRef, githubStatsService: GithubStatsService)
 
   }
 
-  private def subscribeToRepository(repositoryFullname: String, watchTimeSec: Long): Unit = {
-    Logger.info(s"Subscribing to $repositoryFullname with time of $watchTimeSec")
-    clientRef ! "subscribed"
+  private def onSubscribe(repository: String, watchTimeSec: Long): Unit = {
+    Logger.info(s"Subscribing to $repository with time of $watchTimeSec")
+
+    if (!clientSubscriptions.isDefinedAt(repository)) {
+      val childRef = context.actorOf(StarWatcherActor.props(clientRef, githubStatsService))
+      clientSubscriptions.put(repository, childRef)
+      childRef ! StartWatch(repository, watchTimeSec)
+    } else {
+      self ! ClientError(s"You are already subscribed to $repository")
+    }
+
   }
 
-  private def unsubscribeToRepository(repositoryFullname: String): Unit = {
-    Logger.info(s"Unsubscribing to $repositoryFullname")
-    clientRef ! "unsubscribed"
+  private def onUnsubscribe(repository: String): Unit = {
+    Logger.info(s"Unsubscribing to $repository")
+
+    if (clientSubscriptions.isDefinedAt(repository)) {
+      val childRef = clientSubscriptions(repository)
+      context stop childRef
+      clientSubscriptions.remove(repository)
+    } else {
+      self ! ClientError(s"You are note subscribed to $repository")
+    }
+
   }
 
   private def parseRawAndSend(rawMessage: String): Unit = {
-    Logger.info(s"Received message from websocket: $rawMessage")
+    Logger.info(s"Received message from ws client: $rawMessage")
 
     try {
       val message = parseRawMessage(rawMessage)
@@ -65,7 +83,7 @@ class WsClientActor(clientRef: ActorRef, githubStatsService: GithubStatsService)
     } catch {
       case e: Exception =>
         Logger.error(s"Error while parsing message: $e", e)
-        self ! InvalidMessage(s"Unexpected message: $rawMessage")
+        self ! ClientError(s"Unexpected message: $rawMessage")
     }
   }
 
@@ -78,14 +96,14 @@ class WsClientActor(clientRef: ActorRef, githubStatsService: GithubStatsService)
 
       case Some("subscribe") =>
         Json.fromJson[Subscribe](rawJson)
-          .getOrElse(InvalidMessage(s"Invalid subscribe message: ${rawJson.toString()}"))
+          .getOrElse(ClientError(s"Invalid subscribe message: ${rawJson.toString()}"))
 
       case Some("unsubscribe") =>
         Json.fromJson[Unsubscribe](rawJson)
-          .getOrElse(InvalidMessage(s"Invalid unsubscribe message: ${rawJson.toString()}"))
+          .getOrElse(ClientError(s"Invalid unsubscribe message: ${rawJson.toString()}"))
 
       case _ =>
-        InvalidMessage(s"Unexpected message: ${rawJson.toString()}")
+        ClientError(s"Unexpected message: ${rawJson.toString()}")
     }
 
     parsedMessage
