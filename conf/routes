@@ -3,7 +3,7 @@ GET        /github/statistics/user/:username/top-languages                     c
 
 GET        /github/statistics/project/:owner/:repository/top-committers        controllers.GithubStatsController.getTopComitters(owner, repository)
 
-GET        /github/statistics/project/:owner/:repository/issues                controllers.GithubStatsController.getIssuesForLastMonth(owner, repository)
+GET        /github/statistics/project/:owner/:repository/issues                controllers.GithubStatsController.getIssuesOfRepository(owner, repository, endDate: Option[String], numberOfDays: Option[Int])
 
 GET        /github/statistics/project/watch-stars                              controllers.GithubStatsController.watchStars
 

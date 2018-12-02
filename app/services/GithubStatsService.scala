@@ -1,6 +1,6 @@
 package services
 
-import java.time.LocalDateTime
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 import githubStats._
@@ -67,7 +67,7 @@ class GithubStatsService @Inject()(httpClient: HttpClient) {
   }
 
   def getIssuesPerDayForRepository(githubRepository: GithubRepository,
-                                   endDate: LocalDateTime,
+                                   endDate: LocalDate,
                                    periodDays: Int): Future[List[GithubIssueAggregForDay]] = {
 
     val formatter = DateTimeFormatter.ofPattern("dd/MM")
@@ -92,7 +92,7 @@ class GithubStatsService @Inject()(httpClient: HttpClient) {
     })
   }
 
-  private def getIssuesForDay(githubRepository: GithubRepository, day: LocalDateTime): Future[List[GithubIssue]] = {
+  private def getIssuesForDay(githubRepository: GithubRepository, day: LocalDate): Future[List[GithubIssue]] = {
     val formattedDay = day.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
     httpClient.get(GithubApiRoutes.searchIssuesCreatedOnDay(githubRepository, formattedDay))
       .map(raw => GithubEntitiesMapper.rawSearchToGithubIssues(raw.as[JsObject]))

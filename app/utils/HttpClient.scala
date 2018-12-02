@@ -19,6 +19,9 @@ class HttpRequestException(message: String) extends Exception(message) {
 class HttpClientImpl @Inject()(wsClient: WSClient) extends HttpClient {
 
   def get(url: String, expectedStatus: Int = 200): Future[JsValue] = {
+    println()
+    println(url)
+    println()
     getRequest(url).get().map(response => {
       checkStatus(response, expectedStatus)
       response.json
