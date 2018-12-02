@@ -2,26 +2,35 @@ package controllers
 
 import java.time.LocalDateTime
 
+import akka.actor.ActorSystem
+import akka.stream.Materializer
 import githubStats._
 import javax.inject._
 import play.api.Logger
 import play.api.libs.json.{Json, Writes}
+import play.api.libs.streams.ActorFlow
 import play.api.mvc._
 import services.GithubStatsService
+import watchStars.WsClientActor
 
 import scala.concurrent.ExecutionContext
 
 
 @Singleton
 class GithubStatsController @Inject()(cc: ControllerComponents,
-                                      githubService: GithubStatsService)(implicit exec: ExecutionContext) extends AbstractController(cc) {
+                                      githubStatsService: GithubStatsService)
+                                     (implicit exec: ExecutionContext,
+                                      system: ActorSystem,
+                                      mat: Materializer) extends AbstractController(cc) {
+
+  implicit val committerWrites: Writes[GithubCommitter] = Json.writes[GithubCommitter]
+  implicit val languageStatsWrites: Writes[GithubIssueAggregForDay] = Json.writes[GithubIssueAggregForDay]
 
   def getTopComitters(owner: String, repository: String): Action[AnyContent] = Action.async {
-    implicit val committerWrites: Writes[GithubCommitter] = Json.writes[GithubCommitter]
 
     Logger.debug(s"Asking for top comitters on project: $owner/$repository")
 
-    githubService.getTopComittersOfRepo(GithubRepository(owner, repository)).map(comitters => {
+    githubStatsService.getTopComittersOfRepo(GithubRepository(owner, repository)).map(comitters => {
       Ok(Json.obj("comitters" -> comitters))
     })
   }
@@ -31,21 +40,27 @@ class GithubStatsController @Inject()(cc: ControllerComponents,
 
     Logger.debug(s"Asking for top languages for user: $username")
 
-    githubService.getTopLanguagesOfUser(username).map(languageStats => {
+    githubStatsService.getTopLanguagesOfUser(username).map(languageStats => {
       Ok(Json.obj("languages" -> languageStats))
     })
   }
 
   def getIssuesForLastMonth(owner: String, repository: String): Action[AnyContent] = Action.async {
-    implicit val languageStatsWrites: Writes[GithubIssueAggregForDay] = Json.writes[GithubIssueAggregForDay]
 
     Logger.debug(s"Asking for issues per day for repository: $repository")
 
     val endDate = LocalDateTime.now().minusDays(1)
     val days = 25 // it's a small month
-    githubService.getIssuesPerDayForRepository(GithubRepository(owner, repository), endDate, days).map(issues => {
+    githubStatsService.getIssuesPerDayForRepository(GithubRepository(owner, repository), endDate, days).map(issues => {
       Ok(Json.obj("issuesPerDay" -> issues))
     })
+  }
+
+  def watchStars: WebSocket = WebSocket.accept[String, String] { request =>
+    ActorFlow.actorRef { out =>
+      Logger.debug(s"New websocket connection")
+      WsClientActor.props(out, githubStatsService)
+    }
   }
 
 }
