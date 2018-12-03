@@ -2,7 +2,7 @@ package githubStats
 
 import akka.actor.{Actor, ActorRef, Props}
 import githubStats.StarWatcherActor.StartWatch
-import githubStats.WsClientActor.{ClientError, Subscribe, Unsubscribe}
+import githubStats.WsClientActor.{WsClientError, WsClientMessage, Subscribe, Unsubscribe}
 import play.api.Logger
 import play.api.libs.json._
 
@@ -16,11 +16,15 @@ object WsClientActor {
 
   final case class Unsubscribe(repository: String)
 
-  final case class ClientError(message: String)
+  final case class WsClientError(message: String)
+
+  final case class WsClientMessage(message: String)
 
   implicit val subscribeReads: Reads[Subscribe] = Json.reads[Subscribe]
   implicit val unsubscribeReads: Reads[Unsubscribe] = Json.reads[Unsubscribe]
-  implicit val clientErrorWrites: Writes[ClientError] = Json.writes[ClientError]
+
+  implicit val clientErrorWrites: Writes[WsClientError] = Json.writes[WsClientError]
+  implicit val clientMessageWrites: Writes[WsClientMessage] = Json.writes[WsClientMessage]
 
 }
 
@@ -36,8 +40,11 @@ class WsClientActor(clientRef: ActorRef, starWatcherFactory: StarWatcherActorFac
     case Unsubscribe(repository) =>
       onUnsubscribe(repository)
 
-    case ClientError(message) =>
-      clientRef ! Json.toJson(ClientError(message)).toString()
+    case WsClientError(message) =>
+      clientRef ! Json.toJson(WsClientError(message)).toString()
+
+    case WsClientMessage(message) =>
+      clientRef ! Json.toJson(WsClientMessage(message)).toString()
 
     case msg: String =>
       self ! rawMessageToActorMessage(msg)
@@ -50,9 +57,11 @@ class WsClientActor(clientRef: ActorRef, starWatcherFactory: StarWatcherActorFac
     if (!clientSubscriptions.isDefinedAt(repository)) {
       val childRef = starWatcherFactory.newStarWatcher(context, clientRef)
       clientSubscriptions.put(repository, childRef)
+
       childRef ! StartWatch(repository, watchTimeSec)
+      clientRef ! WsClientMessage(s"Subscribed to $repository with interval of $watchTimeSec seconds")
     } else {
-      self ! ClientError(s"You are already subscribed to $repository")
+      self ! WsClientError(s"You are already subscribed to $repository")
     }
 
   }
@@ -64,8 +73,10 @@ class WsClientActor(clientRef: ActorRef, starWatcherFactory: StarWatcherActorFac
       val childRef = clientSubscriptions(repository)
       context stop childRef
       clientSubscriptions.remove(repository)
+
+      clientRef ! WsClientMessage(s"Unsubscribed from $repository")
     } else {
-      self ! ClientError(s"You are note subscribed to $repository")
+      self ! WsClientError(s"You are note subscribed to $repository")
     }
 
   }
@@ -78,7 +89,7 @@ class WsClientActor(clientRef: ActorRef, starWatcherFactory: StarWatcherActorFac
     } catch {
       case e: Exception =>
         Logger.error(s"Error while parsing message: $e", e)
-        ClientError(s"Unexpected message: $rawMessage")
+        WsClientError(s"Unexpected message: $rawMessage")
     }
   }
 
@@ -91,14 +102,14 @@ class WsClientActor(clientRef: ActorRef, starWatcherFactory: StarWatcherActorFac
 
       case Some("subscribe") =>
         Json.fromJson[Subscribe](rawJson)
-          .getOrElse(ClientError(s"Invalid subscribe message: ${rawJson.toString()}"))
+          .getOrElse(WsClientError(s"Invalid subscribe message: ${rawJson.toString()}"))
 
       case Some("unsubscribe") =>
         Json.fromJson[Unsubscribe](rawJson)
-          .getOrElse(ClientError(s"Invalid unsubscribe message: ${rawJson.toString()}"))
+          .getOrElse(WsClientError(s"Invalid unsubscribe message: ${rawJson.toString()}"))
 
       case _ =>
-        ClientError(s"Unexpected message: ${rawJson.toString()}")
+        WsClientError(s"Unexpected message: ${rawJson.toString()}")
     }
 
     parsedMessage

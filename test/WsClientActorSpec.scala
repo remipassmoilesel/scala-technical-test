@@ -1,6 +1,7 @@
 import akka.actor.{ActorContext, ActorRef, ActorSystem}
 import akka.testkit.{ImplicitSender, TestKit}
 import githubStats.StarWatcherActor.StartWatch
+import githubStats.WsClientActor.WsClientMessage
 import githubStats._
 import org.mockito.Mockito._
 import org.scalatest._
@@ -36,6 +37,20 @@ class WsClientActorSpec extends TestKit(ActorSystem("WsClientActorSpec"))
 
       wsClient ! "Bad message"
       expectMsg(2.seconds, "{\"message\":\"Unexpected message: Bad message\"}")
+    }
+
+    "Should register client on subscribe request" in {
+      val githubStatsService = mock[GithubStatsRepository]
+      val mockFactory = mock[StarWatcherActorFactory]
+
+      when(mockFactory.newStarWatcher(any[ActorContext], any[ActorRef]))
+        .thenReturn(testActor)
+
+      val wsClient = system.actorOf(WsClientActor.props(testActor, mockFactory))
+
+      wsClient ! "{\"action\": \"subscribe\",     \"repository\": \"kubernetes/kubernetes\", \"intervalSec\": 3}"
+      expectMsg(2.seconds, StartWatch("kubernetes/kubernetes", 3))
+      expectMsg(2.seconds, WsClientMessage("Subscribed to kubernetes/kubernetes with interval of 3 seconds"))
     }
 
   }
