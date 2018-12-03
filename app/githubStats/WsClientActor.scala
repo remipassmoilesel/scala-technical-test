@@ -2,7 +2,7 @@ package githubStats
 
 import akka.actor.{Actor, ActorRef, Props}
 import githubStats.StarWatcherActor.StartWatch
-import githubStats.WsClientActor.{WsClientError, WsClientMessage, Subscribe, Unsubscribe}
+import githubStats.WsClientActor.{Subscribe, Unsubscribe, WsClientError, WsClientMessage}
 import play.api.Logger
 import play.api.libs.json._
 
@@ -28,7 +28,7 @@ object WsClientActor {
 
 }
 
-class WsClientActor(clientRef: ActorRef, starWatcherFactory: StarWatcherActorFactory) extends Actor {
+class WsClientActor(wsClientRef: ActorRef, starWatcherFactory: StarWatcherActorFactory) extends Actor {
 
   private val clientSubscriptions = mutable.Map[String, ActorRef]()
 
@@ -40,14 +40,8 @@ class WsClientActor(clientRef: ActorRef, starWatcherFactory: StarWatcherActorFac
     case Unsubscribe(repository) =>
       onUnsubscribe(repository)
 
-    case WsClientError(message) =>
-      clientRef ! Json.toJson(WsClientError(message)).toString()
-
-    case WsClientMessage(message) =>
-      clientRef ! Json.toJson(WsClientMessage(message)).toString()
-
     case msg: String =>
-      self ! rawMessageToActorMessage(msg)
+      onWsClientMessage(msg)
 
   }
 
@@ -55,13 +49,13 @@ class WsClientActor(clientRef: ActorRef, starWatcherFactory: StarWatcherActorFac
     Logger.info(s"Subscribing to $repository with time of $watchTimeSec")
 
     if (!clientSubscriptions.isDefinedAt(repository)) {
-      val childRef = starWatcherFactory.newStarWatcher(context, clientRef)
+      val childRef = starWatcherFactory.newStarWatcher(context, wsClientRef)
       clientSubscriptions.put(repository, childRef)
 
       childRef ! StartWatch(repository, watchTimeSec)
-      clientRef ! WsClientMessage(s"Subscribed to $repository with interval of $watchTimeSec seconds")
+      wsClientRef ! Json.toJson(WsClientMessage(s"Subscribed to $repository with interval of $watchTimeSec seconds")).toString()
     } else {
-      self ! WsClientError(s"You are already subscribed to $repository")
+      wsClientRef ! Json.toJson(WsClientError(s"You are already subscribed to $repository")).toString()
     }
 
   }
@@ -74,22 +68,28 @@ class WsClientActor(clientRef: ActorRef, starWatcherFactory: StarWatcherActorFac
       context stop childRef
       clientSubscriptions.remove(repository)
 
-      clientRef ! WsClientMessage(s"Unsubscribed from $repository")
+      wsClientRef ! Json.toJson(WsClientMessage(s"Unsubscribed from $repository")).toString()
     } else {
-      self ! WsClientError(s"You are note subscribed to $repository")
+      wsClientRef ! Json.toJson(WsClientError(s"You are note subscribed to $repository")).toString()
     }
 
   }
 
-  private def rawMessageToActorMessage(rawMessage: String): Any = {
+  private def onWsClientMessage(rawMessage: String): Any = {
     Logger.info(s"Received message from ws client: $rawMessage")
 
-    try {
+    val message = try {
       parseRawMessage(rawMessage)
     } catch {
       case e: Exception =>
         Logger.error(s"Error while parsing message: $e", e)
         WsClientError(s"Unexpected message: $rawMessage")
+    }
+
+    message match {
+      case error: WsClientError =>
+        wsClientRef ! Json.toJson(error).toString()
+      case _ => self ! message
     }
   }
 

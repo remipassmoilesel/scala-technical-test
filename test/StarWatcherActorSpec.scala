@@ -1,5 +1,5 @@
 import akka.actor.ActorSystem
-import akka.testkit.{ImplicitSender, TestKit}
+import akka.testkit.{ImplicitSender, TestActorRef, TestKit}
 import githubStats.StarWatcherActor.StartWatch
 import githubStats.{GithubRepo, GithubRepoStars, GithubStatsRepository, StarWatcherActor}
 import org.mockito.Mockito._
@@ -27,7 +27,7 @@ class StarWatcherActorSpec extends TestKit(ActorSystem("StarWatcherActorSpec"))
 
     "Should start watching stars" in {
       val githubStatsService = mock[GithubStatsRepository]
-      val starWatcher = system.actorOf(StarWatcherActor.props(testActor, githubStatsService))
+      val starWatcher = TestActorRef(StarWatcherActor.props(testActor, githubStatsService))
 
       when(githubStatsService.getStarNumberOfRepo(any[GithubRepo]))
         .thenReturn(Future {
