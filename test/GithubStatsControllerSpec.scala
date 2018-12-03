@@ -19,7 +19,7 @@ class GithubStatsControllerSpec extends PlaySpec with MockitoSugar with MockitoM
   "GithubStatsController" should {
 
     "Should return list of top committers of specified project" in {
-      when(clientMock.get("https://api.github.com/repos/firecracker-microvm/firecracker/topCommitters?per_page=100"))
+      when(clientMock.get("https://api.github.com/repos/firecracker-microvm/firecracker/commits?per_page=100"))
         .thenReturn(Future {
           TestData.getJsonFile("/topCommitters/rawCommits.json")
         })
