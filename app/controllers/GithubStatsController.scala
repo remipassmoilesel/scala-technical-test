@@ -23,10 +23,10 @@ class GithubStatsController @Inject()(cc: ControllerComponents,
                                       mat: Materializer) extends AbstractController(cc) {
 
   implicit val committerWrites: Writes[GithubCommitter] = Json.writes[GithubCommitter]
-  implicit val languageStatsWrites: Writes[GithubIssueAggregForDay] = Json.writes[GithubIssueAggregForDay]
+  implicit val issueAggregateWrites: Writes[GithubIssueAggregForDay] = Json.writes[GithubIssueAggregForDay]
+  implicit val languageStatsWrites: Writes[GithubLanguageUsage] = Json.writes[GithubLanguageUsage]
 
   def getTopComitters(owner: String, repository: String): Action[AnyContent] = Action.async {
-
     Logger.debug(s"Asking for top comitters on project: $owner/$repository")
 
     githubStatsRepo.getTopComittersOfRepo(GithubRepo(repository, owner)).map(comitters => {
@@ -35,8 +35,6 @@ class GithubStatsController @Inject()(cc: ControllerComponents,
   }
 
   def getTopLanguages(username: String): Action[AnyContent] = Action.async {
-    implicit val languageStatsWrites: Writes[GithubLanguageUsage] = Json.writes[GithubLanguageUsage]
-
     Logger.debug(s"Asking for top languages for user: $username")
 
     githubStatsRepo.getTopLanguagesOfUser(username).map(languageStats => {
@@ -46,7 +44,6 @@ class GithubStatsController @Inject()(cc: ControllerComponents,
 
   def getIssuesOfRepository(owner: String, repository: String, endDateStr: Option[String],
                             daysQueryParam: Option[Int]): Action[AnyContent] = Action.async {
-
     Logger.debug(s"Asking for issues per day for repository: $repository numberOfDays=$daysQueryParam endDate=$endDateStr")
 
     val df = DateTimeFormatter.ofPattern("yyyy-MM-dd")
@@ -59,7 +56,6 @@ class GithubStatsController @Inject()(cc: ControllerComponents,
   }
 
   def watchStars: WebSocket = WebSocket.accept[String, String] { request =>
-
     Logger.debug(s"New websocket connection")
 
     ActorFlow.actorRef { out =>
