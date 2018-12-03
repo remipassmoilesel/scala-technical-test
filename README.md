@@ -38,7 +38,7 @@ Voir ensuite: [target/scala-2.12/scoverage-report/index.html](target/scala-2.12/
 **Construction du projet en Fatjar et lancement**:
 
     $ sbt assembly
-    $ java -Dplay.http.secret.key=cb55e60f67ed735e60a551b58e4d61f1628ae3d3848509c539 -jar target/scala-2.12/play-scala-starter-example-assembly-1.0-SNAPSHOT.jar
+    $ java -Dplay.http.secret.key=cb55e60f67ed735e60a551b58e4d61f1628ae3d3848509c539 -jar target/scala-2.12/scala-technical-test-assembly-0.1.jar
 
 
 ## Utiliser l'application
