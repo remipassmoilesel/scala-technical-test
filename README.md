@@ -56,6 +56,11 @@ vous pouvez définir une variable AUTHORIZATION_HEADER pour vous connecter à l'
 
     GET localhost:9000/github/statistics/project/:owner/:repository/top-committers
     
+    
+Exemple: 
+    
+    GET localhost:9000/github/statistics/project/scala/scala/top-committers
+    
     {
         "comitters": [
             {
@@ -73,6 +78,11 @@ vous pouvez définir une variable AUTHORIZATION_HEADER pour vous connecter à l'
 
 **US 2-2**: Langages les plus utilisés par un utilisateur:
 
+    GET localhost:9000/github/statistics/user/:username/top-languages
+    
+    
+Exemple:
+    
     GET localhost:9000/github/statistics/user/KouglofKabyle/top-languages
 
     {
@@ -94,7 +104,13 @@ vous pouvez définir une variable AUTHORIZATION_HEADER pour vous connecter à l'
 
 **US 2-3**: Nombre d'issues par jour pour un projet:
 
+    GET localhost:9000/github/statistics/project/:owner/:repository/issues
+    
+    
+Exemple:    
+    
     GET localhost:9000/github/statistics/project/kubernetes/kubernetes/issues
+    GET localhost:9000/github/statistics/project/kubernetes/kubernetes/issues?endDate=2018-10-09&numberOfDays=3
     
     {
         "issuesPerDay": [
@@ -121,11 +137,12 @@ vous pouvez définir une variable AUTHORIZATION_HEADER pour vous connecter à l'
             
 **US 3-1, 3-2, 3-3**: Surveiller en temps réel le nombre d'étoiles d'un dépôt à travers un canal Websocket:
 
-    Utiliser un client comme: https://software.hixie.ch/utilities/js/websocket/
+Utiliser un client Websocket, par exemple: [https://software.hixie.ch/utilities/js/websocket/](https://software.hixie.ch/utilities/js/websocket/)
 
     GET ws://localhost:9000/github/statistics/project/watch-stars
 
-    Exemples de requêtes:
+
+Exemple de messages:
         
         {"action": "subscribe",     "repository": "kubernetes/kubernetes", "intervalSec": 10}
         {"action": "unsubscribe",   "repository": "kubernetes/kubernetes"}
@@ -133,7 +150,7 @@ vous pouvez définir une variable AUTHORIZATION_HEADER pour vous connecter à l'
 
 ## Qu'est-ce que j'aurai aimé faire avec un peu plus de temps ?
 
-- Utilisation des Flows Akka avec Back-pressure
+- Utilisation de l'API stream Akka avec Back-pressure
 - Intégrer Swagger: https://swagger.io
 - Tests de performances, par exemple avec Gatling: https://gatling.io
 - Configurer Akka pour clusterisation des acteurs entre JVMs
@@ -142,9 +159,9 @@ vous pouvez définir une variable AUTHORIZATION_HEADER pour vous connecter à l'
 
 ## Ressources utilisées
 
-- Applied akka patterns: https://www.oreilly.com/library/view/applied-akka-patterns/9781491934876/
-- Doc scala: https://docs.scala-lang.org
-- Doc akka: https://doc.akka.io
+- Applied Akka patterns: https://www.oreilly.com/library/view/applied-akka-patterns/9781491934876/
+- Doc Scala: https://docs.scala-lang.org
+- Doc Akka: https://doc.akka.io
 - Scala best practices: https://github.com/alexandru/scala-best-practices
 - Template Play: https://github.com/playframework/play-scala-starter-example
 - Liste des liens Stackoverflow [en téléchargement au format CSV (38Mo)](http://bitly.com/98K8eH)

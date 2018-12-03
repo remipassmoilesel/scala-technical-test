@@ -14,20 +14,20 @@ object GithubEntitiesMapper {
       .toList
   }
 
-  def rawToLanguageUsage(raw: JsObject): List[LanguageUsage] = {
+  def rawToLanguageUsage(raw: JsObject): List[GithubLanguageUsage] = {
     raw.keys
       .map(key => {
-        LanguageUsage(key, raw.value(key).asInstanceOf[JsNumber].value.toInt)
+        GithubLanguageUsage(key, raw.value(key).asInstanceOf[JsNumber].value.toInt)
       })
       .toList
   }
 
-  def rawToGithubRepositories(raw: JsArray): List[GithubRepository] = {
+  def rawToGithubRepositories(raw: JsArray): List[GithubRepo] = {
     raw.value
       .map(value => {
         val name = (value \ "name").getOrElse(JsString("Unknown name")).as[String]
         val owner = (value \ "owner" \ "login").getOrElse(JsString("Unknown owner")).as[String]
-        GithubRepository(name, owner)
+        GithubRepo(name, owner)
       })
       .toList
   }
@@ -42,11 +42,11 @@ object GithubEntitiesMapper {
       .toList
   }
 
-  def rawToGithubRepositoryStars(raw: JsObject): GithubRepositoryStars = {
+  def rawToGithubRepositoryStars(raw: JsObject): GithubRepoStars = {
     val starCount = (raw \ "stargazers_count").getOrElse(JsNumber(-1)).as[Int]
     val fullName = (raw \ "full_name").getOrElse(JsString("Unknown full name")).as[String]
 
-    GithubRepositoryStars(fullName, starCount)
+    GithubRepoStars(fullName, starCount)
   }
 
 }

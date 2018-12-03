@@ -19,26 +19,10 @@ class HttpRequestException(message: String) extends Exception(message) {
 class HttpClientImpl @Inject()(wsClient: WSClient) extends HttpClient {
 
   def get(url: String, expectedStatus: Int = 200): Future[JsValue] = {
-    println()
-    println(url)
-    println()
     getRequest(url).get().map(response => {
-      checkStatus(response, expectedStatus)
+      checkStatus(response, expectedStatus, url)
       response.json
     })
-  }
-
-  private def checkStatus(response: WSResponse, expectedStatus: Int): Unit = {
-    if (response.status != expectedStatus) {
-      throw new HttpRequestException(
-        s"""
-        Bad status code: ${response.status} ($expectedStatus expected)
-
-        ResponseBody=${response.json}
-
-        ResponseHeaders=${response.headers}
-        """)
-    }
   }
 
   private def getRequest(url: String): WSRequest = {
@@ -48,6 +32,21 @@ class HttpClientImpl @Inject()(wsClient: WSClient) extends HttpClient {
       request.withHttpHeaders(("Authorization", sys.env("AUTHORIZATION_HEADER")))
     }
     request
+  }
+
+  private def checkStatus(response: WSResponse, expectedStatus: Int, requestUrl: String): Unit = {
+    if (response.status != expectedStatus) {
+      throw new HttpRequestException(
+        s"""
+        Bad status code: ${response.status} ${response.statusText} ($expectedStatus expected)
+
+        Request=${requestUrl}
+
+        ResponseBody=${response.json}
+
+        ResponseHeaders=${response.headers}
+        """)
+    }
   }
 
 }

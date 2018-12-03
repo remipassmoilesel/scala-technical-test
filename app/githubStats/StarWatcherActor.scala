@@ -1,18 +1,16 @@
-package starsWatch
+package githubStats
 
 import akka.actor.{Actor, ActorRef, Props, Timers}
-import githubStats.GithubRepository
+import githubStats.StarWatcherActor.{CheckStars, StartWatch}
 import play.api.Logger
 import play.api.libs.json.Json
-import services.GithubStatsService
-import starsWatch.StarWatcherActor.{CheckStars, StartWatch}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 
 object StarWatcherActor {
 
-  def props(wsClientRef: ActorRef, githubStatsService: GithubStatsService): Props =
+  def props(wsClientRef: ActorRef, githubStatsService: GithubStatsRepository): Props =
     Props(new StarWatcherActor(wsClientRef, githubStatsService))
 
   final case class StartWatch(repository: String, watchTimeSec: Long)
@@ -21,7 +19,7 @@ object StarWatcherActor {
 
 }
 
-class StarWatcherActor(wsClientRef: ActorRef, githubStatsService: GithubStatsService) extends Actor with Timers {
+class StarWatcherActor(wsClientRef: ActorRef, githubStatsService: GithubStatsRepository) extends Actor with Timers {
 
   override def receive: Receive = {
 
@@ -41,7 +39,7 @@ class StarWatcherActor(wsClientRef: ActorRef, githubStatsService: GithubStatsSer
   def onCheckStars(repository: String): Unit = {
     Logger.info(s"Checking stars of $repository interval=$repository")
 
-    githubStatsService.getStarNumberOfRepo(GithubRepository.from(repository))
+    githubStatsService.getStarNumberOfRepo(GithubRepo.from(repository))
       .map(stars => wsClientRef ! Json.toJson(stars).toString())
   }
 

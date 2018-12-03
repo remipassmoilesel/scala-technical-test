@@ -1,14 +1,11 @@
-package starsWatch
-
 import akka.actor.ActorSystem
 import akka.testkit.{ImplicitSender, TestKit}
-import githubStats.{GithubRepository, GithubRepositoryStars}
+import githubStats.StarWatcherActor.StartWatch
+import githubStats.{GithubRepo, GithubRepoStars, GithubStatsRepository, StarWatcherActor}
 import org.mockito.Mockito._
 import org.scalatest._
 import org.scalatest.mockito.MockitoSugar
 import org.specs2.mock.mockito.MockitoMatchers
-import services.GithubStatsService
-import starsWatch.StarWatcherActor.StartWatch
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -29,12 +26,12 @@ class StarWatcherActorSpec extends TestKit(ActorSystem("StarWatcherActorSpec"))
   "StarWatcherActorSpec" should {
 
     "Should start watching stars" in {
-      val githubStatsService = mock[GithubStatsService]
+      val githubStatsService = mock[GithubStatsRepository]
       val starWatcher = system.actorOf(StarWatcherActor.props(testActor, githubStatsService))
 
-      when(githubStatsService.getStarNumberOfRepo(any[GithubRepository]))
+      when(githubStatsService.getStarNumberOfRepo(any[GithubRepo]))
         .thenReturn(Future {
-          GithubRepositoryStars("test-owner/test-repository", 3)
+          GithubRepoStars("test-owner/test-repository", 3)
         })
 
       starWatcher ! StartWatch("test-owner/test-repository", 1)

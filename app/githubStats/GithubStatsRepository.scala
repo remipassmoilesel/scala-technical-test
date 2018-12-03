@@ -1,9 +1,8 @@
-package services
+package githubStats
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-import githubStats._
 import javax.inject.Inject
 import play.api.libs.json._
 import utils.HttpClient
@@ -11,9 +10,9 @@ import utils.HttpClient
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class GithubStatsService @Inject()(httpClient: HttpClient) {
+class GithubStatsRepository @Inject()(httpClient: HttpClient) {
 
-  def getTopComittersOfRepo(githubRepository: GithubRepository): Future[List[GithubCommitter]] = {
+  def getTopComittersOfRepo(githubRepository: GithubRepo): Future[List[GithubCommitter]] = {
     getLastCommitsOfRepository(githubRepository)
       .map(commits => {
         commits.groupBy(_.authorEmail)
@@ -30,12 +29,12 @@ class GithubStatsService @Inject()(httpClient: HttpClient) {
 
   }
 
-  private def getLastCommitsOfRepository(githubRepository: GithubRepository): Future[List[GithubCommit]] = {
+  private def getLastCommitsOfRepository(githubRepository: GithubRepo): Future[List[GithubCommit]] = {
     httpClient.get(GithubApiRoutes.repositoryCommits(githubRepository))
       .map(rawResponse => GithubEntitiesMapper.jsonToGithubCommitArray(rawResponse.as[JsArray]))
   }
 
-  def getTopLanguagesOfUser(username: String): Future[List[LanguageUsage]] = {
+  def getTopLanguagesOfUser(username: String): Future[List[GithubLanguageUsage]] = {
     getRepositoriesOfUser(username)
       .flatMap(repositories => {
         Future.sequence(repositories.map(getLanguagesOfRepository))
@@ -46,7 +45,7 @@ class GithubStatsService @Inject()(httpClient: HttpClient) {
             groupedLanguages.keys
               .map(languageName => {
                 val totalUsage = groupedLanguages.getOrElse(languageName, List()).foldLeft(0)(_ + _.bytes)
-                LanguageUsage(languageName, totalUsage)
+                GithubLanguageUsage(languageName, totalUsage)
               })
               .toStream
               .sortBy(_.bytes)(Ordering[Int].reverse)
@@ -56,17 +55,17 @@ class GithubStatsService @Inject()(httpClient: HttpClient) {
       })
   }
 
-  private def getLanguagesOfRepository(githubRepository: GithubRepository): Future[List[LanguageUsage]] = {
+  private def getLanguagesOfRepository(githubRepository: GithubRepo): Future[List[GithubLanguageUsage]] = {
     httpClient.get(GithubApiRoutes.languagesOfRepository(githubRepository))
       .map(raw => GithubEntitiesMapper.rawToLanguageUsage(raw.as[JsObject]))
   }
 
-  private def getRepositoriesOfUser(username: String): Future[List[GithubRepository]] = {
+  private def getRepositoriesOfUser(username: String): Future[List[GithubRepo]] = {
     httpClient.get(GithubApiRoutes.repositoriesOfUser(username))
       .map(raw => GithubEntitiesMapper.rawToGithubRepositories(raw.as[JsArray]))
   }
 
-  def getIssuesPerDayForRepository(githubRepository: GithubRepository,
+  def getIssuesPerDayForRepository(githubRepository: GithubRepo,
                                    endDate: LocalDate,
                                    periodDays: Int): Future[List[GithubIssueAggregForDay]] = {
 
@@ -92,13 +91,13 @@ class GithubStatsService @Inject()(httpClient: HttpClient) {
     })
   }
 
-  private def getIssuesForDay(githubRepository: GithubRepository, day: LocalDate): Future[List[GithubIssue]] = {
+  private def getIssuesForDay(githubRepository: GithubRepo, day: LocalDate): Future[List[GithubIssue]] = {
     val formattedDay = day.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
     httpClient.get(GithubApiRoutes.searchIssuesCreatedOnDay(githubRepository, formattedDay))
       .map(raw => GithubEntitiesMapper.rawSearchToGithubIssues(raw.as[JsObject]))
   }
 
-  def getStarNumberOfRepo(githubRepository: GithubRepository): Future[GithubRepositoryStars] = {
+  def getStarNumberOfRepo(githubRepository: GithubRepo): Future[GithubRepoStars] = {
     httpClient.get(GithubApiRoutes.repository(githubRepository))
       .map(raw => GithubEntitiesMapper.rawToGithubRepositoryStars(raw.as[JsObject]))
   }

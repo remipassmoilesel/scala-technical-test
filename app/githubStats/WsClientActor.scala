@@ -1,17 +1,16 @@
-package starsWatch
+package githubStats
 
 import akka.actor.{Actor, ActorRef, Props}
+import githubStats.StarWatcherActor.StartWatch
+import githubStats.WsClientActor.{ClientError, Subscribe, Unsubscribe}
 import play.api.Logger
 import play.api.libs.json._
-import services.GithubStatsService
-import starsWatch.StarWatcherActor.StartWatch
-import starsWatch.WsClientActor.{ClientError, Subscribe, Unsubscribe}
 
 import scala.collection.mutable
 
 object WsClientActor {
 
-  def props(clientRef: ActorRef, githubStatsService: GithubStatsService): Props = Props(new WsClientActor(clientRef, githubStatsService))
+  def props(clientRef: ActorRef, githubStatsService: GithubStatsRepository): Props = Props(new WsClientActor(clientRef, githubStatsService))
 
   final case class Subscribe(repository: String, intervalSec: Long)
 
@@ -25,7 +24,7 @@ object WsClientActor {
 
 }
 
-class WsClientActor(clientRef: ActorRef, githubStatsService: GithubStatsService) extends Actor {
+class WsClientActor(clientRef: ActorRef, githubStatsService: GithubStatsRepository) extends Actor {
 
   private val clientSubscriptions = mutable.Map[String, ActorRef]()
 

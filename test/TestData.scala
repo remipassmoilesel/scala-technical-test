@@ -1,5 +1,3 @@
-package controllers
-
 import play.api.libs.json.{JsValue, Json}
 
 import scala.io.Source
