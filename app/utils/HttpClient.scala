@@ -28,9 +28,11 @@ class HttpClientImpl @Inject()(wsClient: WSClient) extends HttpClient {
   private def getRequest(url: String): WSRequest = {
     val request = wsClient.url(url)
       .withRequestTimeout(10000.millis)
+
     if (sys.env.get("AUTHORIZATION_HEADER").isDefined) {
       request.withHttpHeaders(("Authorization", sys.env("AUTHORIZATION_HEADER")))
     }
+
     request
   }
 

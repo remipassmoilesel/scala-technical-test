@@ -25,17 +25,17 @@ Voir: [documentation/installation-preprequis.md](documentation/installation-prep
 
 ## Commandes de base
 
-Démarrer l'application:
+**Démarrer l'application**:
 
     $ sbt clean run
     
-Rapport de couverture de test:
+**Rapport de couverture de test**:
     
     $ sbt clean coverage test coverageReport
 
 Voir ensuite: [target/scala-2.12/scoverage-report/index.html](target/scala-2.12/scoverage-report/index.html)
     
-Construction du projet en Fatjar et lancement:
+**Construction du projet en Fatjar et lancement**:
 
     $ sbt assembly
     $ java -Dplay.http.secret.key=cb55e60f67ed735e60a551b58e4d61f1628ae3d3848509c539 -jar target/scala-2.12/play-scala-starter-example-assembly-1.0-SNAPSHOT.jar
@@ -52,7 +52,7 @@ vous pouvez définir une variable AUTHORIZATION_HEADER pour vous connecter à l'
     $ sbt run
     
 
-**US 2-1**: Principaux participants d'un projet:
+**US 2-1. Principaux participants d'un projet:**
 
     GET localhost:9000/github/statistics/project/:owner/:repository/top-committers
     
@@ -76,7 +76,7 @@ Exemple:
             ...
 
 
-**US 2-2**: Langages les plus utilisés par un utilisateur:
+**US 2-2. Langages les plus utilisés par un utilisateur:**
 
     GET localhost:9000/github/statistics/user/:username/top-languages
     
@@ -102,7 +102,7 @@ Exemple:
             ...
 
 
-**US 2-3**: Nombre d'issues par jour pour un projet:
+**US 2-3. Nombre d'issues par jour pour un projet:**
 
     GET localhost:9000/github/statistics/project/:owner/:repository/issues
     
@@ -135,7 +135,7 @@ Exemple:
             ...
             
             
-**US 3-1, 3-2, 3-3**: Surveiller en temps réel le nombre d'étoiles d'un dépôt à travers un canal Websocket:
+**US 3-1, 3-2, 3-3. Surveiller en temps réel le nombre d'étoiles d'un dépôt à travers un canal Websocket:**
 
 Utiliser un client Websocket, par exemple: [https://software.hixie.ch/utilities/js/websocket/](https://software.hixie.ch/utilities/js/websocket/)
 
@@ -152,7 +152,7 @@ Exemple de messages:
 
 - Utilisation de l'API stream Akka avec Back-pressure
 - Intégrer Swagger: https://swagger.io
-- Tests de performances, par exemple avec Gatling: https://gatling.io
+- Tests de performances en CI, par exemple avec Gatling: https://gatling.io
 - Configurer Akka pour clusterisation des acteurs entre JVMs
 - Puis déploiement sur Kubernetes avec auto-scaling
 - Meilleurs tests
