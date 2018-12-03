@@ -150,12 +150,12 @@ Exemple de messages:
 
 ## Qu'est-ce que j'aurai aimé faire avec un peu plus de temps ?
 
-- Meilleurs tests
 - Utilisation de l'API stream Akka avec Back-pressure
 - Intégrer Swagger: https://swagger.io
 - Tests de performances, par exemple avec Gatling: https://gatling.io
 - Configurer Akka pour clusterisation des acteurs entre JVMs
 - Puis déploiement sur Kubernetes avec auto-scaling
+- Meilleurs tests
 
 
 ## Ressources utilisées
