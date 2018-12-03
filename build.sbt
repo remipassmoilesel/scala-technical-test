@@ -18,7 +18,7 @@ libraryDependencies += guice
 libraryDependencies += ws
 libraryDependencies += "com.h2database" % "h2" % "1.4.197"
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % Test
-libraryDependencies += "com.typesafe.akka" %% "akka-testkit" % "2.5.18" % Test
+libraryDependencies += "com.typesafe.akka" %% "akka-testkit" % "2.5.17" % Test
 libraryDependencies += specs2 % Test
 
 /**

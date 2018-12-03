@@ -10,7 +10,7 @@ import scala.collection.mutable
 
 object WsClientActor {
 
-  def props(clientRef: ActorRef, githubStatsService: GithubStatsRepository): Props = Props(new WsClientActor(clientRef, githubStatsService))
+  def props(clientRef: ActorRef, starWatcherFactory: StarWatcherActorFactory): Props = Props(new WsClientActor(clientRef, starWatcherFactory))
 
   final case class Subscribe(repository: String, intervalSec: Long)
 
@@ -24,7 +24,7 @@ object WsClientActor {
 
 }
 
-class WsClientActor(clientRef: ActorRef, githubStatsService: GithubStatsRepository) extends Actor {
+class WsClientActor(clientRef: ActorRef, starWatcherFactory: StarWatcherActorFactory) extends Actor {
 
   private val clientSubscriptions = mutable.Map[String, ActorRef]()
 
@@ -48,7 +48,7 @@ class WsClientActor(clientRef: ActorRef, githubStatsService: GithubStatsReposito
     Logger.info(s"Subscribing to $repository with time of $watchTimeSec")
 
     if (!clientSubscriptions.isDefinedAt(repository)) {
-      val childRef = context.actorOf(StarWatcherActor.props(clientRef, githubStatsService))
+      val childRef = starWatcherFactory.newStarWatcher(context, clientRef)
       clientSubscriptions.put(repository, childRef)
       childRef ! StartWatch(repository, watchTimeSec)
     } else {

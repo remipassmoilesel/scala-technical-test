@@ -144,12 +144,13 @@ Utiliser un client Websocket, par exemple: [https://software.hixie.ch/utilities/
 
 Exemple de messages:
         
-        {"action": "subscribe",     "repository": "kubernetes/kubernetes", "intervalSec": 10}
+        {"action": "subscribe",     "repository": "kubernetes/kubernetes", "intervalSec": 3}
         {"action": "unsubscribe",   "repository": "kubernetes/kubernetes"}
         
 
 ## Qu'est-ce que j'aurai aimé faire avec un peu plus de temps ?
 
+- Meilleurs tests
 - Utilisation de l'API stream Akka avec Back-pressure
 - Intégrer Swagger: https://swagger.io
 - Tests de performances, par exemple avec Gatling: https://gatling.io
