@@ -175,4 +175,4 @@ Sauras-tu la retrouver ?
 
 En cadeau, un exemplaire gratuit de ce dépôt de code source.
 
-La solution est ici: https://github.com/remipassmoilesel/scala-technical-test/tree/fix/solution-to-the-riddle
+La solution est ici: https://github.com/remipassmoilesel/scala-technical-test/compare/fix/solution-to-the-riddle
