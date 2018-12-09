@@ -29,11 +29,9 @@ class HttpClientImpl @Inject()(wsClient: WSClient) extends HttpClient {
     val request = wsClient.url(url)
       .withRequestTimeout(10000.millis)
 
-    if (sys.env.get("AUTHORIZATION_HEADER").isDefined) {
+    sys.env.get("AUTHORIZATION_HEADER").map { auth =>
       request.withHttpHeaders(("Authorization", sys.env("AUTHORIZATION_HEADER")))
-    }
-
-    request
+    }.getOrElse(request)
   }
 
   private def checkStatus(response: WSResponse, expectedStatus: Int, requestUrl: String): Unit = {
