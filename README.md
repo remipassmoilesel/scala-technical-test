@@ -166,3 +166,13 @@ Exemple de messages:
 - Scala best practices: https://github.com/alexandru/scala-best-practices
 - Template Play: https://github.com/playframework/play-scala-starter-example
 - Liste des liens Stackoverflow [en téléchargement au format CSV (38Mo)](http://bitly.com/98K8eH)
+
+        
+## Petite énigme
+
+Après revue de code par un développeur à l'oeil exercé, il est apparu que le code contient une erreur. 
+Sauras-tu la retrouver ?
+
+En cadeau, un exemplaire gratuit de ce dépôt de code source.
+
+La solution est ici: https://github.com/remipassmoilesel/scala-technical-test/tree/fix/solution-to-the-riddle
